@@ -1,4 +1,4 @@
 * text=auto
 *.glsl linguist-language=GLSL
-*.cpp linguist-language=C++
-*.h linguist-language=C++
+*.cpp linguist-language="C++"
+*.h linguist-language="C++"
