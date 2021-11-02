@@ -6,6 +6,7 @@
 #include "VAO.h"
 #include "VBO.h"
 #include "Window.h"
+#include "Texture.h"
 #include <stb/stb_image.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -23,14 +24,19 @@ GLfloat red = 0.0f, green = 0.0f, blue = 0.0f;
 // Vertices coordinates
 GLfloat vertices[] =
 { //     coords                colors        texCoords
-	-0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,  0.0f, 0.0f,   // back left bottom   0
-	-0.5f, -0.5f, 0.5f,  0.0f, 1.0f, 0.0f,  0.0f, 1.0f,   // front left bottom  1
-	0.5f, -0.5f, 0.5f,   0.0f, 0.0f, 1.0f,  1.0f, 1.0f,   // front right bottom 2
-	0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 1.0f,  1.0f, 0.0f,   // back right bottom  3
-	-0.5f, 0.5f, -0.5f,  0.0f, 1.0f, 1.0f,  0.0f, 0.0f,  // back left top       4
-	-0.5f, 0.5f, 0.5f,   1.0f, 1.0f, 0.0f,  0.0f, 1.0f,  // front left top      5
-	0.5f, 0.5f, 0.5f,    1.0f, 1.0f, 1.0f,  1.0f, 1.0f,  // front right top     6
-	0.5f, 0.5f, -0.5f,   0.0f, 0.0f, 0.0f,  1.0f, 0.0f   // back right top      7 
+	//-0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,  0.0f, 0.0f,   // back left bottom   0 cube
+	//-0.5f, -0.5f, 0.5f,  0.0f, 1.0f, 0.0f,  0.0f, 1.0f,   // front left bottom  1
+	//0.5f, -0.5f, 0.5f,   0.0f, 0.0f, 1.0f,  1.0f, 1.0f,   // front right bottom 2
+	//0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 1.0f,  1.0f, 0.0f,   // back right bottom  3
+	//-0.5f, 0.5f, -0.5f,  0.0f, 1.0f, 1.0f,  0.0f, 0.0f,  // back left top       4
+	//-0.5f, 0.5f, 0.5f,   1.0f, 1.0f, 0.0f,  0.0f, 1.0f,  // front left top      5
+	//0.5f, 0.5f, 0.5f,    1.0f, 1.0f, 1.0f,  1.0f, 1.0f,  // front right top     6
+	//0.5f, 0.5f, -0.5f,   0.0f, 0.0f, 0.0f,  1.0f, 0.0f   // back right top      7 
+	-0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, // 0
+	-0.5f, -0.5f, 0.5f,  0.0f, 1.0f, 0.0f, 1.0f, 0.0f,  // 1
+	0.5f, -0.5f, 0.5f,   0.0f, 0.0f, 1.0f, 0.0f, 1.0f,   // 2
+	0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 0.0f, 1.0f, 1.0f,  // 3
+	0.0f, 0.7f, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f, 1.0f     // 4
 };
 
 // Indices for vertices order
@@ -38,16 +44,10 @@ GLuint indices[] =
 {
 	0, 1, 2,
 	0, 2, 3,
-	1, 2, 5,
-	2, 5, 6,
-	0, 1, 5,
-	0, 4, 5,
-	0, 3, 4,
-	3, 4, 7,
-	2, 3, 6,
-	3, 6, 7,
-	5, 6, 7,
-	4, 5, 7
+	0, 1, 4,
+	1, 2, 4,
+	2, 3, 4,
+	3, 0, 4
 };
 
 float randf(float max) {
@@ -92,14 +92,7 @@ int main() {
 	VAO1.linkAttrib(VBO1, 1, 3, GL_FLOAT, 8 * sizeof(float), (void*)(3 * sizeof(float))); // links color to layout
 	VAO1.linkAttrib(VBO1, 2, 2, GL_FLOAT, 8 * sizeof(float), (void*)(6 * sizeof(float))); // links texture coords to layout
 
-	//GLuint transUniID = glGetUniformLocation(shaderProgram.ID, "transform"); // get uniform location with reference to the program and the name of the uniform in the shader
-	//GLuint colorUniID = glGetUniformLocation(shaderProgram.ID, "inColor");
-
-	//glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f); // translation vector
-	//glm::mat4 trans = glm::mat4(1.0f); // setup 4x4 identity matrix
-
-	//vec = trans * vec;
-	//std::cout << vec.x << vec.y << vec.z << std::endl;
+	Texture tex("cube.png");
 
 	// unbind
 	VAO1.unbind();
@@ -111,16 +104,13 @@ int main() {
 
 	// configure opengl
 	glEnable(GL_DEPTH_TEST); // dont draw triangles that are behind other triangles
-	glEnable(GL_STENCIL_TEST);
-	//glEnable(GL_CULL_FACE);
-	//glCullFace(GL_FRONT);
+	//glEnable(GL_STENCIL_TEST);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_FRONT);
+	glDepthFunc(GL_LESS);
+	glDepthRange(0.1, 100);
 	//glFrontFace(GL_CW);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // repeat texture on x axis
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT); // repeat texture on y axis
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); // on minifying texture use nearest filtering 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); // same on magnifying
-	glGenerateMipmap(GL_TEXTURE_2D); // generate mipmaps
+	
 
 	while (!window.shouldClose()) {
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // clear back buffer with black
@@ -131,6 +121,7 @@ int main() {
 		//green < 1.0f ? green += (float(rand()) / float((RAND_MAX)) * 0.02f) : green = 0;
 
 		shaderProgram.activate();
+		tex.bind();
 
 		double crntTime = glfwGetTime();
 		if (crntTime - prevTime >= 1 / 60) {
@@ -143,8 +134,8 @@ int main() {
 		glm::mat4 view = glm::mat4(1.0f);
 
 		model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 1.0f, 0.0f)); // rotate on y=1
-		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -10.0f)); // moves camera away from object by 2 units and down 1/2 units
-		proj = glm::perspective(glm::radians(25.0f), (float)WIDTH / HEIGHT, 0.1f, 100.0f); // fov, aspect ratio, closest clipping point, furthest clipping point. basically render distance
+		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -2.0f)); // moves camera away from object by 2 units and down 1/2 units
+		proj = glm::perspective(glm::radians(45.0f), (float)WIDTH / HEIGHT, 0.1f, 100.0f); // fov, aspect ratio, closest clipping point, furthest clipping point. basically render distance
 
 		GLuint modelLoc = glGetUniformLocation(shaderProgram.ID, "model");
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model)); // 1 = num of matrices, false = dont do weird matrix maths shit, valueptr = get pointer to matrix instead of actual matrix data
@@ -165,6 +156,7 @@ int main() {
 		window.update();
 	}
 
+	tex.unbind();
 	VAO1.destroy();
 	EBO1.destroy();
 	VBO1.destroy();
