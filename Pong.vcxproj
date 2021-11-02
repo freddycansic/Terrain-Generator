@@ -162,10 +162,6 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="default.frag" />
-    <None Include="default.vert" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="EBO.h" />
     <ClInclude Include="Matrix4.h" />
     <ClInclude Include="Shader.h" />
@@ -175,7 +171,12 @@
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="cube.png" />
+    <None Include="shaders\default.frag" />
+    <None Include="shaders\default.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="textures\acer.jpg" />
+    <Image Include="textures\cube.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

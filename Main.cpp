@@ -32,10 +32,10 @@ GLfloat vertices[] =
 	//-0.5f, 0.5f, 0.5f,   1.0f, 1.0f, 0.0f,  0.0f, 1.0f,  // front left top      5
 	//0.5f, 0.5f, 0.5f,    1.0f, 1.0f, 1.0f,  1.0f, 1.0f,  // front right top     6
 	//0.5f, 0.5f, -0.5f,   0.0f, 0.0f, 0.0f,  1.0f, 0.0f   // back right top      7 
-	-0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, // 0
+	-0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, // 0
 	-0.5f, -0.5f, 0.5f,  0.0f, 1.0f, 0.0f, 1.0f, 0.0f,  // 1
 	0.5f, -0.5f, 0.5f,   0.0f, 0.0f, 1.0f, 0.0f, 1.0f,   // 2
-	0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 0.0f, 1.0f, 1.0f,  // 3
+	0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 0.0f, 0.0f, 0.0f,  // 3
 	0.0f, 0.7f, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f, 1.0f     // 4
 };
 
@@ -78,7 +78,7 @@ int main() {
 	gladLoadGL(); // configure opengl with glad
 	glViewport(0, 0, WIDTH, HEIGHT); // sets view to 0-900 width, 0-900 height
 
-	Shader shaderProgram("default.vert", "default.frag"); // wraps vertex and frag shaders into program
+	Shader shaderProgram("shaders/default.vert", "shaders/default.frag"); // wraps vertex and frag shaders into program
 
 	VAO VAO1;
 
@@ -92,7 +92,7 @@ int main() {
 	VAO1.linkAttrib(VBO1, 1, 3, GL_FLOAT, 8 * sizeof(float), (void*)(3 * sizeof(float))); // links color to layout
 	VAO1.linkAttrib(VBO1, 2, 2, GL_FLOAT, 8 * sizeof(float), (void*)(6 * sizeof(float))); // links texture coords to layout
 
-	Texture tex("cube.png");
+	Texture tex("textures/acer.jpg", GL_TEXTURE_2D, GL_NEAREST, GL_NEAREST, GL_REPEAT);
 
 	// unbind
 	VAO1.unbind();
@@ -103,18 +103,18 @@ int main() {
 	double prevTime = glfwGetTime();
 
 	// configure opengl
-	glEnable(GL_DEPTH_TEST); // dont draw triangles that are behind other triangles
-	//glEnable(GL_STENCIL_TEST);
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_FRONT);
-	glDepthFunc(GL_LESS);
-	glDepthRange(0.1, 100);
-	//glFrontFace(GL_CW);
 	
+	//glEnable(GL_STENCIL_TEST);
+	//glCullFace(GL_FRONT);
+	glDepthFunc(GL_LESS);
+	//glDepthRange(0.1, 100);
+	//glFrontFace(GL_CW);
+	//glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST); // dont draw triangles that are behind other triangles
 
 	while (!window.shouldClose()) {
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // clear back buffer with black
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//blue < 1.0f ? blue += (float(rand()) / float((RAND_MAX)) * 0.02f) : blue = 0;
 		//red < 1.0f ? red += (float(rand()) / float((RAND_MAX)) * 0.02f) : red = 0;
@@ -125,7 +125,7 @@ int main() {
 
 		double crntTime = glfwGetTime();
 		if (crntTime - prevTime >= 1 / 60) {
-			rotation += 0.01f;
+			rotation += 0.05f;
 			prevTime = crntTime;
 		}
 
@@ -133,9 +133,9 @@ int main() {
 		glm::mat4 proj = glm::mat4(1.0f);
 		glm::mat4 view = glm::mat4(1.0f);
 
-		model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 1.0f, 0.0f)); // rotate on y=1
+		model = glm::rotate(model, glm::radians(rotation), glm::vec3(1.0f, 1.0f, 1.0f)); // rotate on y=1
 		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -2.0f)); // moves camera away from object by 2 units and down 1/2 units
-		proj = glm::perspective(glm::radians(45.0f), (float)WIDTH / HEIGHT, 0.1f, 100.0f); // fov, aspect ratio, closest clipping point, furthest clipping point. basically render distance
+		proj = glm::perspective(glm::radians(45.0f), (float)WIDTH / HEIGHT, 1.0f, 100.0f); // fov, aspect ratio, closest clipping point, furthest clipping point. basically render distance
 
 		GLuint modelLoc = glGetUniformLocation(shaderProgram.ID, "model");
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model)); // 1 = num of matrices, false = dont do weird matrix maths shit, valueptr = get pointer to matrix instead of actual matrix data
@@ -145,8 +145,6 @@ int main() {
 
 		GLuint projLoc = glGetUniformLocation(shaderProgram.ID, "proj");
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(proj));
-
-
 
 		VAO1.bind();
 

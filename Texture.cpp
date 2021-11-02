@@ -1,27 +1,46 @@
 #include "Texture.h"
 
-Texture::Texture(const char* filePath) {
+const char* Texture::imgType() {
+	std::string fileStr(filePath);
+	int indexdot = fileStr.find(".");
+	return (fileStr.substr(indexdot + 1, fileStr.size() - indexdot)).c_str();
+}
+
+Texture::Texture(const char* filePath, GLenum target, GLuint magFiltering, GLuint minFiltering, GLuint texWrap) {
+	this->target = target;
+	this->filePath = filePath;
 	data = stbi_load(filePath, &width, &height, &nbrChannels, 0);
 
 	glGenTextures(1, &ID); // 1 = how many textures are being calculated
-	glBindTexture(GL_TEXTURE_2D, ID); // bind texture so that following commands will be executed on current texture
+	glBindTexture(target, ID); // bind texture so that following commands will be executed on current texture
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // repeat texture on x axis
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT); // repeat texture on y axis
+	glTexParameteri(target, GL_TEXTURE_WRAP_S, texWrap); // repeat texture on x axis
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); // on minifying texture use nearest filtering 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); // same on magnifying
+	if(target == GL_TEXTURE_2D || target == GL_TEXTURE_3D) // if using 2d or 3d texture
+		glTexParameteri(target, GL_TEXTURE_WRAP_T, texWrap); // repeat texture on y axis
+
+	if (target == GL_TEXTURE_3D) // if using 3d texture
+		glTexParameteri(target, GL_TEXTURE_WRAP_T, texWrap); // repeat texture on z axis
+
+	glTexParameteri(target, GL_TEXTURE_MIN_FILTER, minFiltering); // on minifying texture use nearest filtering 
+	glTexParameteri(target, GL_TEXTURE_MAG_FILTER, magFiltering); // same on magnifying
 
 	if (data) {   
-		glTexImage2D(GL_TEXTURE_2D, // target
-					0, // mipmap level (no mipmap)
-					GL_RGBA, // data channels (can be GL_RGBA)
-					width, height, 
-					0, // no idea 
-					GL_RGB, GL_UNSIGNED_BYTE, // type of data being entered, byte because char = 8bit
-					data);
+		if (imgType() == "png" || imgType() == "bmp") {
+			glTexImage2D(target, // target
+				0, // mipmap level (no mipmap)
+				GL_RGBA, // data channels (can be GL_RGB)
+				width, height,
+				0, // no idea 
+				GL_RGBA, GL_UNSIGNED_BYTE, // type of data being entered, byte because char = 8bit
+				data);
+		}
+		else {
+			glTexImage2D(target, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data); // if not png or bmp then dont use alpha channel
+		}
+		
 
-		glGenerateMipmap(GL_TEXTURE_2D); // generate mipmaps
+		glGenerateMipmap(target); // generate mipmaps
 	}
 	else {
 		std::cout << "Texture failed to load." << std::endl;
@@ -31,9 +50,9 @@ Texture::Texture(const char* filePath) {
 }
 
 void Texture::bind() {
-	glBindTexture(GL_TEXTURE_2D, ID);
+	glBindTexture(target, ID);
 }
 
 void Texture::unbind() {
-	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(target, 0);
 }
