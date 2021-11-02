@@ -99,14 +99,11 @@ int main() {
 	VBO1.unbind();
 	EBO1.unbind();
 
-	float rotation = 0.0f;
-	double prevTime = glfwGetTime();
-
 	// configure opengl
 	
 	//glEnable(GL_STENCIL_TEST);
 	//glCullFace(GL_FRONT);
-	glDepthFunc(GL_LESS);
+	//glDepthFunc(GL_LESS);
 	//glDepthRange(0.1, 100);
 	//glFrontFace(GL_CW);
 	//glEnable(GL_CULL_FACE);
@@ -123,20 +120,26 @@ int main() {
 		shaderProgram.activate();
 		tex.bind();
 
-		double crntTime = glfwGetTime();
-		if (crntTime - prevTime >= 1 / 60) {
-			rotation += 0.05f;
-			prevTime = crntTime;
-		}
+		// camera
+		glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f); // position = world origin = -3 on z axis (positive 3 because z axis increases as you move away from the screen)
+		glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f); // target = world origin
+		glm::vec3 cameraDirection = glm::vec3(glm::normalize(cameraPos - cameraTarget)); // subtracting vectors = difference between them (learnopengl 8.4)
 
-		glm::mat4 model = glm::mat4(1.0f); // initialise identity matrices
+		glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f); // literally have no idea what this does
+		glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraDirection)); // or this
+		glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight); // or this
+
+		glm::mat4 model = glm::mat4(1.0f); // iitialise identity matrices
 		glm::mat4 proj = glm::mat4(1.0f);
 		glm::mat4 view = glm::mat4(1.0f);
 
-		model = glm::rotate(model, glm::radians(rotation), glm::vec3(1.0f, 1.0f, 1.0f)); // rotate on y=1
+		// transform object
+		model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(1.0f, 1.0f, 1.0f)); // vec3 = axis to rotate on
+
 		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -2.0f)); // moves camera away from object by 2 units and down 1/2 units
 		proj = glm::perspective(glm::radians(45.0f), (float)WIDTH / HEIGHT, 1.0f, 100.0f); // fov, aspect ratio, closest clipping point, furthest clipping point. basically render distance
 
+		// uniforms
 		GLuint modelLoc = glGetUniformLocation(shaderProgram.ID, "model");
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model)); // 1 = num of matrices, false = dont do weird matrix maths shit, valueptr = get pointer to matrix instead of actual matrix data
 
