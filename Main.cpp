@@ -13,42 +13,66 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <ctime>
 #include <cstdlib>
+#include "Mesh.h"
 
 using std::cout;
 using std::endl;
+
+struct Mesh {
+	GLfloat* vertices;
+	GLuint* indices;
+};
 
 const unsigned int WIDTH = 800, HEIGHT = 800;
 
 GLfloat red = 0.0f, green = 0.0f, blue = 0.0f;
 
+float xMove = 0.0f;
+
 // Vertices coordinates
 GLfloat vertices[] =
-{ //     coords                colors        texCoords
-	//-0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,  0.0f, 0.0f,   // back left bottom   0 cube
-	//-0.5f, -0.5f, 0.5f,  0.0f, 1.0f, 0.0f,  0.0f, 1.0f,   // front left bottom  1
-	//0.5f, -0.5f, 0.5f,   0.0f, 0.0f, 1.0f,  1.0f, 1.0f,   // front right bottom 2
-	//0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 1.0f,  1.0f, 0.0f,   // back right bottom  3
-	//-0.5f, 0.5f, -0.5f,  0.0f, 1.0f, 1.0f,  0.0f, 0.0f,  // back left top       4
-	//-0.5f, 0.5f, 0.5f,   1.0f, 1.0f, 0.0f,  0.0f, 1.0f,  // front left top      5
-	//0.5f, 0.5f, 0.5f,    1.0f, 1.0f, 1.0f,  1.0f, 1.0f,  // front right top     6
-	//0.5f, 0.5f, -0.5f,   0.0f, 0.0f, 0.0f,  1.0f, 0.0f   // back right top      7 
-	-0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, // 0
+{ //     coords                colors        texCoords 
+	-0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,  // 0 pyramid
 	-0.5f, -0.5f, 0.5f,  0.0f, 1.0f, 0.0f, 1.0f, 0.0f,  // 1
-	0.5f, -0.5f, 0.5f,   0.0f, 0.0f, 1.0f, 0.0f, 1.0f,   // 2
+	0.5f, -0.5f, 0.5f,   0.0f, 0.0f, 1.0f, 0.0f, 1.0f,  // 2
 	0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 0.0f, 0.0f, 0.0f,  // 3
-	0.0f, 0.7f, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f, 1.0f     // 4
+	0.0f, 0.7f, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f, 1.0f,   // 4
+
+	-0.5f + xMove, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,  0.0f, 0.0f,   // back left bottom   5 cube
+	-0.5f + xMove, -0.5f, 0.5f,  0.0f, 1.0f, 0.0f,  0.0f, 1.0f,   // front left bottom  6
+	0.5f + xMove, -0.5f, 0.5f,   0.0f, 0.0f, 1.0f,  1.0f, 1.0f,   // front right bottom 7
+	0.5f + xMove, -0.5f, -0.5f,  1.0f, 0.0f, 1.0f,  1.0f, 0.0f,   // back right bottom  8
+	-0.5f + xMove, 0.5f, -0.5f,  0.0f, 1.0f, 1.0f,  0.0f, 0.0f,  // back left top       9
+	-0.5f + xMove, 0.5f, 0.5f,   1.0f, 1.0f, 0.0f,  0.0f, 1.0f,  // front left top      10
+	0.5f + xMove, 0.5f, 0.5f,    1.0f, 1.0f, 1.0f,  1.0f, 1.0f,  // front right top     11
+	0.5f + xMove, 0.5f, -0.5f,   0.0f, 0.0f, 0.0f,  1.0f, 0.0f   // back right top      12
 };
 
 // Indices for vertices order
 GLuint indices[] =
 {
-	0, 1, 2,
-	0, 2, 3,
-	0, 1, 4,
-	1, 2, 4,
-	2, 3, 4,
-	3, 0, 4
+	//0, 1, 2,  // pyramid
+	//0, 2, 3,
+	//0, 1, 4,
+	//1, 2, 4,
+	//2, 3, 4,
+	//3, 0, 4,
+
+	5, 8, 6, // bottom face
+	8, 7, 6,
+	5, 8, 12, // back face
+	5, 9, 12,
+	5, 6, 9, // left face
+	6, 9, 10,
+	7, 8, 11, // right face
+	8, 12, 11,
+	9, 10, 12, // top face
+	10, 11, 12,
+	6, 7, 11, // front face
+	6, 10, 11
 };
+
+Mesh cube();
 
 float randf(float max) {
 	return (float(rand()) / float((RAND_MAX)) * max);
