@@ -1,3 +1,4 @@
 glm/
 Libraries/
 Debug/
+glad.c
