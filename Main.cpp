@@ -17,11 +17,6 @@
 using std::cout;
 using std::endl;
 
-struct Mesh {
-	GLfloat* vertices;
-	GLuint* indices;
-};
-
 const unsigned int WIDTH = 800, HEIGHT = 800;
 
 GLfloat red = 0.0f, green = 0.0f, blue = 0.0f;
@@ -70,8 +65,6 @@ GLuint indices[] =
 	6, 7, 11, // front face
 	6, 10, 11
 };
-
-Mesh cube();
 
 float randf(float max) {
 	return (float(rand()) / float((RAND_MAX)) * max);
