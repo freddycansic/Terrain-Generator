@@ -1,0 +1,3 @@
+glm/
+Libraries/
+Debug/
