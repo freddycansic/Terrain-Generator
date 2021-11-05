@@ -1,2 +1,29 @@
-﻿  Main.cpp
-  Pong.vcxproj -> C:\Users\fredd\source\repos\openGL3DTest\x64\Debug\Pong.exe
+﻿  EBO.cpp
+  Main.cpp
+  Shader.cpp
+  stb.cpp
+  Texture.cpp
+c:\users\fredd\onedrive\desktop\help me\texture.cpp(5): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  VAO.cpp
+c:\users\fredd\onedrive\desktop\help me\vao.cpp(9): warning C4244: 'argument': conversion from 'GLsizeiptr' to 'GLsizei', possible loss of data
+  VBO.cpp
+  Window.cpp
+  Generating Code...
+  glad.c
+  LINK : C:\Users\fredd\OneDrive\Desktop\help me\x64\Debug\Pong.exe not found or not built by the last incremental link; performing full link
+glfw3.lib(context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(context.obj)' or at 'C:\Users\fredd\OneDrive\Desktop\help me\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(init.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(init.obj)' or at 'C:\Users\fredd\OneDrive\Desktop\help me\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(input.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(input.obj)' or at 'C:\Users\fredd\OneDrive\Desktop\help me\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(monitor.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(monitor.obj)' or at 'C:\Users\fredd\OneDrive\Desktop\help me\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(vulkan.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(vulkan.obj)' or at 'C:\Users\fredd\OneDrive\Desktop\help me\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(window.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(window.obj)' or at 'C:\Users\fredd\OneDrive\Desktop\help me\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(win32_init.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_init.obj)' or at 'C:\Users\fredd\OneDrive\Desktop\help me\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(win32_joystick.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_joystick.obj)' or at 'C:\Users\fredd\OneDrive\Desktop\help me\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(win32_monitor.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_monitor.obj)' or at 'C:\Users\fredd\OneDrive\Desktop\help me\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(win32_time.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_time.obj)' or at 'C:\Users\fredd\OneDrive\Desktop\help me\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(win32_thread.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_thread.obj)' or at 'C:\Users\fredd\OneDrive\Desktop\help me\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(win32_window.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_window.obj)' or at 'C:\Users\fredd\OneDrive\Desktop\help me\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(wgl_context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(wgl_context.obj)' or at 'C:\Users\fredd\OneDrive\Desktop\help me\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(egl_context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(egl_context.obj)' or at 'C:\Users\fredd\OneDrive\Desktop\help me\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(osmesa_context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(osmesa_context.obj)' or at 'C:\Users\fredd\OneDrive\Desktop\help me\x64\Debug\glfw.pdb'; linking object as if no debug info
+  Pong.vcxproj -> C:\Users\fredd\OneDrive\Desktop\help me\x64\Debug\Pong.exe

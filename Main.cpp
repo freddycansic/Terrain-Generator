@@ -13,7 +13,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <ctime>
 #include <cstdlib>
-#include "Mesh.h"
 
 using std::cout;
 using std::endl;
@@ -89,7 +88,6 @@ void randomiseColors(GLfloat* vertices) {
 			cout << randf(0.02f) << endl;
 		}
 	}
-
 }
 
 int main() {
@@ -102,7 +100,7 @@ int main() {
 	gladLoadGL(); // configure opengl with glad
 	glViewport(0, 0, WIDTH, HEIGHT); // sets view to 0-900 width, 0-900 height
 
-	Shader shaderProgram("shaders/default.vert", "shaders/default.frag"); // wraps vertex and frag shaders into program
+	Shader shaderProgram("default.vert", "default.frag"); // wraps vertex and frag shaders into program
 
 	VAO VAO1;
 
@@ -116,7 +114,7 @@ int main() {
 	VAO1.linkAttrib(VBO1, 1, 3, GL_FLOAT, 8 * sizeof(float), (void*)(3 * sizeof(float))); // links color to layout
 	VAO1.linkAttrib(VBO1, 2, 2, GL_FLOAT, 8 * sizeof(float), (void*)(6 * sizeof(float))); // links texture coords to layout
 
-	Texture tex("textures/acer.jpg", GL_TEXTURE_2D, GL_NEAREST, GL_NEAREST, GL_REPEAT);
+	Texture tex("acer.jpg", GL_TEXTURE_2D, GL_NEAREST, GL_NEAREST, GL_REPEAT);
 
 	// unbind
 	VAO1.unbind();
