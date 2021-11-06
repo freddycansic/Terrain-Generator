@@ -2,6 +2,7 @@
 #define LIST_H
 
 #include <vector>
+#include <glad/glad.h>
 
 using std::vector;
 
@@ -11,6 +12,10 @@ class List
 public:
 	List(T* arr, unsigned int size);
 	List append(List& other);
+	unsigned int length();
+
+	GLfloat toGLFloatArr();
+	GLuint toGLUTIntArr();
 
 private:
 	vector<T> elements;

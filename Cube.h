@@ -2,15 +2,13 @@
 #define CUBE_H
 
 #include <vector>
-#include <glad/glad.h>
-#include "Utils.h"
 
 using std::vector;
 
 class Cube {
 
 public:
-	Cube(float size, float pos[3], float coords[2]);
+	Cube(float size, vector<float> pos);
 
 private:
 	vector<float> vertices;

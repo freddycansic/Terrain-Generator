@@ -2,7 +2,11 @@
 
 template<typename T>
 vector<T> Utils::join(vector<T> vector1, vector<T> vector2) {
-	return vector1.insert(vector1.end, vector2.begin(), vector2.end()); // append second vector at the end of the first vector, from range 0 - len of vector2
+	//for (int i = 0; i < vector2.size(); i++) {
+	//	vector1.push_back(vector2[i]);
+	//}
+	//return vector1;
+	return (vector1.insert(vector1.end, vector2.begin(), vector2.end())); // append second vector at the end of the first vector, from range 0 - len of vector2
 }
 
 template<typename T>

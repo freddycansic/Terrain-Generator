@@ -7,6 +7,7 @@
 #include "VBO.h"
 #include "Window.h"
 #include "Texture.h"
+#include "List.h"
 #include <stb/stb_image.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -86,7 +87,7 @@ void randomiseColors(GLfloat* vertices) {
 int main() {
 	srand((unsigned int)time(0));
 
-	Window window(WIDTH, HEIGHT, "Pong");
+	Window window(WIDTH, HEIGHT, "Help me");
 
 	window.create();
 
@@ -107,7 +108,7 @@ int main() {
 	VAO1.linkAttrib(VBO1, 1, 3, GL_FLOAT, 8 * sizeof(float), (void*)(3 * sizeof(float))); // links color to layout
 	VAO1.linkAttrib(VBO1, 2, 2, GL_FLOAT, 8 * sizeof(float), (void*)(6 * sizeof(float))); // links texture coords to layout
 
-	Texture tex("acer.jpg", GL_TEXTURE_2D, GL_NEAREST, GL_NEAREST, GL_REPEAT);
+	Texture tex("uvTest.jpg", GL_TEXTURE_2D, GL_NEAREST, GL_NEAREST, GL_REPEAT);
 
 	// unbind
 	VAO1.unbind();
