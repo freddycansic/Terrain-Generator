@@ -57,9 +57,6 @@
     <ClCompile Include="Window.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Utils.cpp">
-      <Filter>Source Files\Engine</Filter>
-    </ClCompile>
     <ClCompile Include="List.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>

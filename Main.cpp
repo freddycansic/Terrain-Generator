@@ -1,6 +1,13 @@
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <stb/stb_image.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <ctime>
+#include <cstdlib>
+
 #include "Shader.h"
 #include "EBO.h"
 #include "VAO.h"
@@ -8,12 +15,9 @@
 #include "Window.h"
 #include "Texture.h"
 #include "List.h"
-#include <stb/stb_image.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <ctime>
-#include <cstdlib>
+#include "Cube.h"
+
+#define log(x) std::cout << x << std::endl;
 
 using std::cout;
 using std::endl;
@@ -85,6 +89,9 @@ void randomiseColors(GLfloat* vertices) {
 }
 
 int main() {
+	Cube cube1(1.0f, vector<float> {0.0f, 0.0f, 0.0f});
+	cube1.printVertices();
+
 	srand((unsigned int)time(0));
 
 	Window window(WIDTH, HEIGHT, "Help me");
