@@ -1,26 +1,14 @@
 #ifndef CUBE_H
 #define CUBE_H
 
-#include <vector>
-#include <glad/glad.h>
-#include "Utils.h"
-#include <iostream>
+#include "Mesh.h"
 
 using std::vector;
 
-class Cube {
+class Cube : public Mesh{
 
 public:
-	Cube(float size, vector<float> pos);
-
-	vector<float> getVertices();
-	vector<unsigned int> getIndices();
-	void printVertices();
-
-private:
-	vector<float> vertices;
-	vector<unsigned int> indices;
-
+	Cube(float cubeSize, float pos[3]);
 };
 
 #endif

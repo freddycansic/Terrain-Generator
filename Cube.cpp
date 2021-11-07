@@ -1,33 +1,37 @@
 #include "Cube.h"
 
-Cube::Cube(GLfloat size, vector<GLfloat> pos) {
-	vector<GLfloat> vertices;
-	vertices = Utils::join(vertices, vector<GLfloat>{ pos[0], pos[1], pos[2],						 0.0f, 0.0f} ); // bottom front left
-	vertices = Utils::join(vertices, vector<GLfloat>{ pos[0] + size, pos[1], pos[2],				 0.0f, 0.0f} ); // bottom front right
-	std::cout << pos[0] + size << std::endl;
-	vertices = Utils::join(vertices, vector<GLfloat>{ pos[0], pos[1], pos[2] - size,				 0.0f, 0.0f} ); // bottom back left
-	vertices = Utils::join(vertices, vector<GLfloat>{ pos[0] - size, pos[1], pos[2] - size,		 0.0f, 0.0f} ); // bottom back right
+Cube::Cube(float cubeSize, float pos[3]) {
+	GLfloat size = (GLfloat) cubeSize; // conversions to glfloats
+	GLfloat x = (GLfloat) pos[0];
+	GLfloat y = (GLfloat) pos[1];
+	GLfloat z = (GLfloat) pos[2];
 
-	vertices = Utils::join(vertices, vector<GLfloat>{ pos[0], pos[1] + size, pos[2],				 0.0f, 0.0f} ); // top front left
-	vertices = Utils::join(vertices, vector<GLfloat>{ pos[0] + size, pos[1] + size, pos[2],		 1.0f, 1.0f} ); // top front right
-	vertices = Utils::join(vertices, vector<GLfloat>{ pos[0], pos[1] + size, pos[2] - size,		 0.0f, 0.0f} ); // top back left
-	vertices = Utils::join(vertices, vector<GLfloat>{ pos[0] - size, pos[1] + size, pos[2] - size, 0.0f, 0.0f} ); // top back right
-	this->vertices = vertices;
-}
+	vector<GLfloat> vertices; // empty vector where vertices will be stored
 
-vector<float> Cube::getVertices() {
-	return this->vertices;
-}
+	vertices = Utils::join(vertices, vector<GLfloat>{ x, y, z,					    0.0f, 0.0f} ); // bottom front left
+    vertices = Utils::join(vertices, vector<GLfloat>{ x + size, y, z,			    0.0f, 0.0f} ); // bottom front right
+	vertices = Utils::join(vertices, vector<GLfloat>{ x, y, z - size,			    0.0f, 0.0f} ); // bottom back left
+	vertices = Utils::join(vertices, vector<GLfloat>{ x - size, y, z - size,		0.0f, 0.0f} ); // bottom back right
 
-vector<unsigned int> Cube::getIndices() {
-	return this->indices;
-}
+	vertices = Utils::join(vertices, vector<GLfloat>{ x, y + size, z,			    0.0f, 0.0f} ); // top front left
+	vertices = Utils::join(vertices, vector<GLfloat>{ x + size, y + size, z,	    1.0f, 1.0f} ); // top front right
+	vertices = Utils::join(vertices, vector<GLfloat>{ x, y + size, z - size,		0.0f, 0.0f} ); // top back left
+	vertices = Utils::join(vertices, vector<GLfloat>{ x - size, y + size, z - size, 0.0f, 0.0f} ); // top back right
+	
+	setVertices(vertices);
 
-void Cube::printVertices() {
-	for (int i = 0; i < this->getVertices().size() / 5; i++) { // 6 = 3 position coords + 2 texture coords
-		for (int k = 0; k < 5; k++) {
-			std::cout << this->getVertices()[k] << ((k==2) ? "  " : " "); // after pos coords do an extra space to show where the texture coords are also take any chance to use a ternary operator cause its so fucking cool
-		}
-		std::cout << std::endl;
-	}
+	setIndices(vector<unsigned int> {
+		0, 1, 2,
+		0, 2, 3,
+		4, 5, 6,
+		4, 6, 7,
+		0, 1, 4,
+		1, 4, 5,
+		3, 2, 7,
+		2, 7, 6,
+		1, 2, 6,
+		1, 6, 2,
+		0, 3, 4,
+		3, 4, 7
+	});
 }

@@ -29,70 +29,61 @@ GLfloat red = 0.0f, green = 0.0f, blue = 0.0f;
 float xMove = 0.0f;
 
 // Vertices coordinates
-GLfloat vertices[] =
-{ //     coords                colors        texCoords 
-	-0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,  // 0 pyramid
-	-0.5f, -0.5f, 0.5f,  0.0f, 1.0f, 0.0f, 1.0f, 0.0f,  // 1
-	0.5f, -0.5f, 0.5f,   0.0f, 0.0f, 1.0f, 0.0f, 1.0f,  // 2
-	0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 0.0f, 0.0f, 0.0f,  // 3
-	0.0f, 0.7f, 0.0f,    1.0f, 1.0f, 1.0f, 1.0f, 1.0f,   // 4
+//GLfloat vertices[] =
+//{ //     coords            texCoords 
+//	-0.5f, -0.5f, -0.5f, 1.0f, 0.0f,  // 0 pyramid
+//	-0.5f, -0.5f, 0.5f,  1.0f, 0.0f,  // 1
+//	0.5f, -0.5f, 0.5f,   0.0f, 1.0f,  // 2
+//	0.5f, -0.5f, -0.5f,  0.0f, 0.0f,  // 3
+//	0.0f, 0.7f, 0.0f,    1.0f, 1.0f,  // 4
+//
+//	-0.5f + xMove, -0.5f, -0.5f,  0.0f, 0.0f,   // back left bottom   5 cube
+//	-0.5f + xMove, -0.5f, 0.5f, 0.0f, 1.0f,   // front left bottom  6
+//	0.5f + xMove, -0.5f, 0.5f,  1.0f, 1.0f,   // front right bottom 7
+//	0.5f + xMove, -0.5f, -0.5f,   1.0f, 0.0f,   // back right bottom  8
+//	-0.5f + xMove, 0.5f, -0.5f,   0.0f, 0.0f,  // back left top       9
+//	-0.5f + xMove, 0.5f, 0.5f,    0.0f, 1.0f,  // front left top      10
+//	0.5f + xMove, 0.5f, 0.5f,     1.0f, 1.0f,  // front right top     11
+//	0.5f + xMove, 0.5f, -0.5f,  1.0f, 0.0f   // back right top      12
+//};
+//
+//// Indices for vertices order
+//GLuint indices[] =
+//{
+//	//0, 1, 2,  // pyramid
+//	//0, 2, 3,
+//	//0, 1, 4,
+//	//1, 2, 4,
+//	//2, 3, 4,
+//	//3, 0, 4,
+//
+//	5, 8, 6, // bottom face
+//	8, 7, 6,
+//	5, 8, 12, // back face
+//	5, 9, 12,
+//	5, 6, 9, // left face
+//	6, 9, 10,
+//	7, 8, 11, // right face
+//	8, 12, 11,
+//	9, 10, 12, // top face
+//	10, 11, 12,
+//	6, 7, 11, // front face
+//	6, 10, 11
+//};
 
-	-0.5f + xMove, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,  0.0f, 0.0f,   // back left bottom   5 cube
-	-0.5f + xMove, -0.5f, 0.5f,  0.0f, 1.0f, 0.0f,  0.0f, 1.0f,   // front left bottom  6
-	0.5f + xMove, -0.5f, 0.5f,   0.0f, 0.0f, 1.0f,  1.0f, 1.0f,   // front right bottom 7
-	0.5f + xMove, -0.5f, -0.5f,  1.0f, 0.0f, 1.0f,  1.0f, 0.0f,   // back right bottom  8
-	-0.5f + xMove, 0.5f, -0.5f,  0.0f, 1.0f, 1.0f,  0.0f, 0.0f,  // back left top       9
-	-0.5f + xMove, 0.5f, 0.5f,   1.0f, 1.0f, 0.0f,  0.0f, 1.0f,  // front left top      10
-	0.5f + xMove, 0.5f, 0.5f,    1.0f, 1.0f, 1.0f,  1.0f, 1.0f,  // front right top     11
-	0.5f + xMove, 0.5f, -0.5f,   0.0f, 0.0f, 0.0f,  1.0f, 0.0f   // back right top      12
-};
+// Mesh declarations
+float cubePos[3] = { 0.0f, 1.0f, 0.5f };
+Cube cube1(0.5f, cubePos);
 
-// Indices for vertices order
-GLuint indices[] =
-{
-	//0, 1, 2,  // pyramid
-	//0, 2, 3,
-	//0, 1, 4,
-	//1, 2, 4,
-	//2, 3, 4,
-	//3, 0, 4,
-
-	5, 8, 6, // bottom face
-	8, 7, 6,
-	5, 8, 12, // back face
-	5, 9, 12,
-	5, 6, 9, // left face
-	6, 9, 10,
-	7, 8, 11, // right face
-	8, 12, 11,
-	9, 10, 12, // top face
-	10, 11, 12,
-	6, 7, 11, // front face
-	6, 10, 11
-};
-
-float randf(float max) {
-	return (float(rand()) / float((RAND_MAX)) * max);
-}
-
-void randomiseColors(GLfloat* vertices) {
-	int size = (int) sizeof(vertices) / sizeof(vertices[0]);
-	float randFloat;
-
-	for (int i = 3; i < size; i += 6) { // for each vertex (initial rgb = 3(offset), i+=6 = each vertex)
-		for (int k = i; k < i + 3; k++) { // for each r g b
-			randFloat = randf(0.02f);
-			//rtices[k] + randFloat >= 1.0f ? vertices[k] = 0;
-			cout << randf(0.02f) << endl;
-		}
-	}
-}
+vector<Mesh> meshes = {cube1};
 
 int main() {
-	Cube cube1(1.0f, vector<float> {0.0f, 0.0f, 0.0f});
-	cube1.printVertices();
+	vector<GLfloat> allVecVertices = Mesh::compileAllVertices(meshes);
 
-	srand((unsigned int)time(0));
+	GLfloat* allVertices = new GLfloat[allVecVertices.size()]; // arr on heap because array size needs to be "dynamic"
+	for (int i = 0; i < allVecVertices.size(); i++) { // for every in allglvertices
+		allVertices[i] = allVecVertices[i];
+	}
 
 	Window window(WIDTH, HEIGHT, "Help me");
 
@@ -108,12 +99,12 @@ int main() {
 	// Binding and adding data to buffers
 	VAO1.bind();
 
-	VBO VBO1(vertices, sizeof(vertices));
+	VBO VBO1(allVertices, sizeof(allVertices));
 	EBO EBO1(indices, sizeof(indices));
 
-	VAO1.linkAttrib(VBO1, 0, 3, GL_FLOAT, 8 * sizeof(float), (void*)0); // links position to layout
-	VAO1.linkAttrib(VBO1, 1, 3, GL_FLOAT, 8 * sizeof(float), (void*)(3 * sizeof(float))); // links color to layout
-	VAO1.linkAttrib(VBO1, 2, 2, GL_FLOAT, 8 * sizeof(float), (void*)(6 * sizeof(float))); // links texture coords to layout
+	VAO1.linkAttrib(VBO1, 0, 3, GL_FLOAT, 5 * sizeof(float), (void*)0); // links position to layout
+	//VAO1.linkAttrib(VBO1, 1, 3, GL_FLOAT, 8 * sizeof(float), (void*)(3 * sizeof(float))); // links color to layout
+	VAO1.linkAttrib(VBO1, 1, 2, GL_FLOAT, 5 * sizeof(float), (void*)(3 * sizeof(float))); // links texture coords to layout
 
 	Texture tex("uvTest.jpg", GL_TEXTURE_2D, GL_NEAREST, GL_NEAREST, GL_REPEAT);
 
