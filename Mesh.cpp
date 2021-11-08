@@ -9,15 +9,15 @@ void Mesh::printVertices() {
 	}
 }
 
-vector<float> Mesh::getVertices() {
+vector<GLfloat> Mesh::getVertices() {
 	return this->vertices;
 }
 
-vector<unsigned int> Mesh::getIndices() {
+vector<GLuint> Mesh::getIndices() {
 	return this->indices;
 }
 
-void Mesh::setIndices(vector<unsigned int> indices) {
+void Mesh::setIndices(vector<GLuint> indices) {
 	this->indices = indices;
 }
 

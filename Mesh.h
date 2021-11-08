@@ -13,47 +13,46 @@ class Mesh
 public:
 	void printVertices();
 
-	vector<float> getVertices();
-	vector<unsigned int> getIndices();
+	vector<GLfloat> getVertices();
+	vector<GLuint> getIndices();
 
 	void setVertices(vector<GLfloat> vertices);
-	void setIndices(vector<unsigned int> indices);
+	void setIndices(vector<GLuint> indices);
 
 	static vector<GLfloat> compileAllVertices(vector<Mesh> meshes) {
-		unsigned int numVerts = 0;
 
-		for (int i = 0; i < meshes.size(); i++) {
-			numVerts += meshes[i].getVertices().size();
-		}
+		vector<GLfloat> allVertices = {};
 
-		vector<GLfloat> allVertices;
-
-		for (int i = 0; i < meshes.size(); i++) { // for every mesh
+		for (Mesh mesh : meshes) { // for every mesh
 			// at the end of allVertices, append the next set of vertices from mesh[i]
-			allVertices.insert(allVertices.end(), meshes[i].getVertices().begin(), meshes[i].getVertices().end());
+		//	vector::iter
+			allVertices = Utils::join(allVertices, mesh.getVertices());
+			//allVertices.insert(allVertices.end(), mesh.getVertices().begin(), mesh.getVertices().end()); // WEIRD ERROR
 		}
 
 		return allVertices;
 	}
 
-	static vector<unsigned int> compileAllIndices(vector<Mesh> meshes) {
+	static vector<GLuint> compileAllIndices(vector<Mesh> meshes) {
 		
-		vector<unsigned int> indices;
+		vector<GLuint> indices;
 		unsigned int lastIndex = 0;
 
 		for (Mesh mesh : meshes) {
-			for (int i = 0; i < mesh.getIndices().size() / 3; i++) { // /3 because triangle
-
-			}
-
-			indices = Utils::join(indices, mesh.getIndices());
+			indices = Utils::join(indices, mesh.getIndices()); // compile all indices into 1 vec
 		}
+
+		for (int i = 0; i < indices.size(); i++) {
+			indices[i] = indices[i] + lastIndex; // increment every index by whatever the last index was
+		}
+
+		return indices;
 
 	}
 
 private:
 	vector<GLfloat> vertices;
-	vector<unsigned int> indices;
+	vector<GLuint> indices;
 };
 
 #endif

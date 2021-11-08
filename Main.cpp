@@ -71,19 +71,68 @@ float xMove = 0.0f;
 //	6, 10, 11
 //};
 
+GLfloat cubeVertices[] = {
+	0, 1, 1.5f,  0, 0,
+	0.5, 1, 1.5,  1, 0,
+	0, 1, 1,  1, 1,
+	-0.5, 1, 1,  0, 0,
+	0, 1.5, 1.5,  0, 0,
+	0.5, 1.5, 1.5,  1, 1,
+	0, 1.5, 1,  0, 0,
+	-0.5, 1.5, 1,  1, 1,
+};
+
+GLuint cubeIndices[]{
+	0, 1, 2,
+	0, 2, 3,
+	4, 5, 6,
+	4, 6, 7,
+	0, 1, 4,
+	1, 4, 5,
+	3, 2, 7,
+	2, 7, 6,
+	1, 2, 6,
+	1, 6, 2,
+	0, 3, 4,
+	3, 4, 7
+};
+
 // Mesh declarations
-float cubePos[3] = { 0.0f, 1.0f, 0.5f };
-Cube cube1(0.5f, cubePos);
+//float cubePos[3] = { 0.0f, 1.0f, 1.5f };
+Cube cube1(0.5f, 0.0f, 1.0f, 1.5f);
 
 vector<Mesh> meshes = {cube1};
 
 int main() {
 	vector<GLfloat> allVecVertices = Mesh::compileAllVertices(meshes);
 
+	//Utils::printVec(allVecVertices);
+	log("VEC VERTICES =");
+	Utils::printVertices(allVecVertices);
+
 	GLfloat* allVertices = new GLfloat[allVecVertices.size()]; // arr on heap because array size needs to be "dynamic"
 	for (int i = 0; i < allVecVertices.size(); i++) { // for every in allglvertices
 		allVertices[i] = allVecVertices[i];
 	}
+
+	log("ARR VERTICES =");
+	Utils::printArr(allVertices, allVecVertices.size());
+	//GLfloat allVertices[] = {1, 4};
+
+	vector<GLuint> allVecIndices = Mesh::compileAllIndices(meshes);
+	
+	log("VEC INDICES =");
+	Utils::printIndices(allVecIndices);
+
+	GLuint* allIndices = new GLuint[allVecIndices.size()];
+	for (int i = 0; i < allVecIndices.size(); i++) {
+		allIndices[i] = allVecIndices[i];
+	}
+
+
+	log("ARR INDICES =");
+	Utils::printArr(allIndices, allVecIndices.size());
+	//unsigned int allIndices[] = {0, 3, 1};
 
 	Window window(WIDTH, HEIGHT, "Help me");
 
@@ -100,18 +149,19 @@ int main() {
 	VAO1.bind();
 
 	VBO VBO1(allVertices, sizeof(allVertices));
-	EBO EBO1(indices, sizeof(indices));
+	EBO EBO1(allIndices, sizeof(allIndices));
 
 	VAO1.linkAttrib(VBO1, 0, 3, GL_FLOAT, 5 * sizeof(float), (void*)0); // links position to layout
 	//VAO1.linkAttrib(VBO1, 1, 3, GL_FLOAT, 8 * sizeof(float), (void*)(3 * sizeof(float))); // links color to layout
 	VAO1.linkAttrib(VBO1, 1, 2, GL_FLOAT, 5 * sizeof(float), (void*)(3 * sizeof(float))); // links texture coords to layout
 
-	Texture tex("uvTest.jpg", GL_TEXTURE_2D, GL_NEAREST, GL_NEAREST, GL_REPEAT);
-
-	// unbind
+	// unbind to not accidentally modify
 	VAO1.unbind();
 	VBO1.unbind();
 	EBO1.unbind();
+
+	// initialise texture
+	Texture tex("uvTest.jpg", GL_TEXTURE_2D, GL_NEAREST, GL_NEAREST, GL_REPEAT);
 
 	// configure opengl
 	
@@ -124,7 +174,7 @@ int main() {
 	glEnable(GL_DEPTH_TEST); // dont draw triangles that are behind other triangles
 
 	while (!window.shouldClose()) {
-		glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // clear back buffer with black
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // clear back buffer with black
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//blue < 1.0f ? blue += (float(rand()) / float((RAND_MAX)) * 0.02f) : blue = 0;
@@ -166,11 +216,13 @@ int main() {
 		VAO1.bind();
 
 		// Draw
-		glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(GLuint), GL_UNSIGNED_INT, 0); // 0 = starting index, 6 = num of vertices to be used (6 = 3 (triangle) * 2))
+		glDrawElements(GL_TRIANGLES, sizeof(allIndices) / sizeof(GLuint), GL_UNSIGNED_INT, 0); // 0 = starting index, 6 = num of vertices to be used (6 = 3 (triangle) * 2))
 
 		window.update();
 	}
 
+	delete[] allIndices;
+	delete[] allVertices;
 	tex.unbind();
 	VAO1.destroy();
 	EBO1.destroy();

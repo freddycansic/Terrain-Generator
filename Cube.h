@@ -8,7 +8,7 @@ using std::vector;
 class Cube : public Mesh{
 
 public:
-	Cube(float cubeSize, float pos[3]);
+	Cube(float cubeSize, GLfloat x, GLfloat y, GLfloat z);
 };
 
 #endif
