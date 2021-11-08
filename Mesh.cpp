@@ -17,10 +17,10 @@ vector<GLuint> Mesh::getIndices() {
 	return this->indices;
 }
 
-void Mesh::setIndices(vector<GLuint> indices) {
+void Mesh::setIndices(const vector<GLuint> &indices) {
 	this->indices = indices;
 }
 
-void Mesh::setVertices(vector<GLfloat> vertices) {
+void Mesh::setVertices(const vector<GLfloat> &vertices) {
 	this->vertices = vertices;
 }

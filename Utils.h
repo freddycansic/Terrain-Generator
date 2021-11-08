@@ -5,9 +5,7 @@
 
 using std::vector;
 
-class Utils {
-
-public:
+namespace Utils { // namespace because im never going to create an instance of this if it were a class
 
 	template<typename T>
 	static vector<T> arrToVec(T* arr, size_t size) {
@@ -19,7 +17,7 @@ public:
 	}
 
 	template<typename T> // holy shiiiit
-	static vector<T> join(vector<T> vector1, vector<T> vector2) {
+	static vector<T> join(vector<T> &vector1, const vector<T> &vector2) {
 		vector1.insert(vector1.end(), vector2.begin(), vector2.end());
 		return vector1; // append second vector at the end of the first vector, from range 0 - len of vector2
 	}
@@ -29,7 +27,7 @@ public:
 	}
 
 	template<typename T>
-	static void printVec(const vector<T> vec) {
+	static void printVec(const vector<T>& vec) {
 		std::cout << "[";
 		for (T element : vec) {
 			std::cout << element << ", ";
@@ -37,7 +35,7 @@ public:
 		std::cout << "]" <<std::endl;
 	}
 
-	static void printVertices(const vector<GLfloat> vertices) {
+	static void printVertices(const vector<GLfloat>& vertices) {
 		std::cout << "VERTICES" << std::endl;
 		for (int i = 0; i < vertices.size() / 5; i++) { // 5 = 3 position coords + 2 texture coords
 			for (int k = 0; k < 5; k++) {
@@ -47,7 +45,7 @@ public:
 		}
 	}
 
-	static void printIndices(const vector<GLuint> indices) {
+	static void printIndices(const vector<GLuint>& indices) {
 		std::cout << "INDICES" << std::endl;
 		for (int i = 0; i < indices.size() / 3; i++) {
 			for (int k = 0; k < 3; k++) {
@@ -65,6 +63,7 @@ public:
 		}
 		std::cout << "]" << std::endl;
 	}
-};
+
+}
 
 #endif

@@ -33,7 +33,7 @@ void Window::update() {
 	glfwPollEvents(); // check for events
 }
 
-void Window::destroy() {
+Window::~Window() {
 	glfwTerminate();
 	glfwDestroyWindow(window);
 }

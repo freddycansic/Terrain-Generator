@@ -14,6 +14,6 @@ void VBO::unbind() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void VBO::destroy() {
+VBO::~VBO() {
 	glDeleteBuffers(1, &ID);
 }

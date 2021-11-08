@@ -15,9 +15,9 @@ class Shader {
 public:
 	GLuint ID; // reference
 	Shader(const char* vertexFile, const char* fragmentFile);
+	~Shader();
 
 	void activate();
-	void destroy();
 };
 
 #endif

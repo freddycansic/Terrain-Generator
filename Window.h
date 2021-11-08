@@ -7,9 +7,9 @@ class Window {
 
 public:
 	Window(const unsigned int height, const unsigned int width, const char* title);
+	~Window();
 
 	void create();
-	void destroy();
 	bool shouldClose();
 	void update();
 

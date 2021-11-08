@@ -6,8 +6,6 @@
 #include <iostream>
 #include "Utils.h"
 
-using std::vector;
-
 class Mesh
 {
 public:
@@ -16,10 +14,10 @@ public:
 	vector<GLfloat> getVertices();
 	vector<GLuint> getIndices();
 
-	void setVertices(vector<GLfloat> vertices);
-	void setIndices(vector<GLuint> indices);
+	void setVertices(const vector<GLfloat> &vertices);
+	void setIndices(const vector<GLuint> &indices);
 
-	static vector<GLfloat> compileAllVertices(vector<Mesh> meshes) {
+	static vector<GLfloat> compileAllVertices(const vector<Mesh> &meshes) {
 
 		vector<GLfloat> allVertices = {};
 
@@ -33,7 +31,7 @@ public:
 		return allVertices;
 	}
 
-	static vector<GLuint> compileAllIndices(vector<Mesh> meshes) {
+	static vector<GLuint> compileAllIndices(const vector<Mesh> &meshes) {
 		
 		vector<GLuint> indices;
 		unsigned int lastIndex = 0;

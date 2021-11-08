@@ -129,7 +129,6 @@ int main() {
 		allIndices[i] = allVecIndices[i];
 	}
 
-
 	log("ARR INDICES =");
 	Utils::printArr(allIndices, allVecIndices.size());
 	//unsigned int allIndices[] = {0, 3, 1};
@@ -219,16 +218,10 @@ int main() {
 		glDrawElements(GL_TRIANGLES, sizeof(allIndices) / sizeof(GLuint), GL_UNSIGNED_INT, 0); // 0 = starting index, 6 = num of vertices to be used (6 = 3 (triangle) * 2))
 
 		window.update();
-	}
+	} 
 
 	delete[] allIndices;
 	delete[] allVertices;
-	tex.unbind();
-	VAO1.destroy();
-	EBO1.destroy();
-	VBO1.destroy();
-	shaderProgram.destroy();
-	window.destroy();
 
 	return 0;
 }
