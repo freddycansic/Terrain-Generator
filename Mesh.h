@@ -34,18 +34,17 @@ public:
 	static vector<GLuint> compileAllIndices(const vector<Mesh> &meshes) {
 		
 		vector<GLuint> indices;
-		unsigned int lastIndex = 0;
+		int lastMaxIndex = 0;
 
 		for (Mesh mesh : meshes) {
-			indices = Utils::join(indices, mesh.getIndices()); // compile all indices into 1 vec
-		}
+			vector<GLuint> nextIndices = mesh.getIndices();
+			nextIndices = Utils::incrementAll(nextIndices, lastMaxIndex);
+			indices = Utils::join(indices, nextIndices); // compile all indices into 1 vec
 
-		for (int i = 0; i < indices.size(); i++) {
-			indices[i] = indices[i] + lastIndex; // increment every index by whatever the last index was
+			lastMaxIndex = Utils::maxInVec(mesh.getIndices()); // get max from last indices
 		}
 
 		return indices;
-
 	}
 
 private:

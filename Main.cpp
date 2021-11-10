@@ -16,8 +16,7 @@
 #include "Texture.h"
 #include "List.h"
 #include "Cube.h"
-
-#define log(x) std::cout << x << std::endl;
+#include "Utils.h"
 
 using std::cout;
 using std::endl;
@@ -121,6 +120,7 @@ int main() {
 
 	vector<GLuint> allVecIndices = Mesh::compileAllIndices(meshes);
 	
+	
 	log("VEC INDICES =");
 	Utils::printIndices(allVecIndices);
 
@@ -151,7 +151,7 @@ int main() {
 	EBO EBO1(allIndices, sizeof(allIndices));
 
 	VAO1.linkAttrib(VBO1, 0, 3, GL_FLOAT, 5 * sizeof(float), (void*)0); // links position to layout
-	//VAO1.linkAttrib(VBO1, 1, 3, GL_FLOAT, 8 * sizeof(float), (void*)(3 * sizeof(float))); // links color to layout
+	VAO1.linkAttrib(VBO1, 1, 3, GL_FLOAT, 8 * sizeof(float), (void*)(3 * sizeof(float))); // links color to layout
 	VAO1.linkAttrib(VBO1, 1, 2, GL_FLOAT, 5 * sizeof(float), (void*)(3 * sizeof(float))); // links texture coords to layout
 
 	// unbind to not accidentally modify
@@ -215,7 +215,7 @@ int main() {
 		VAO1.bind();
 
 		// Draw
-		glDrawElements(GL_TRIANGLES, sizeof(allIndices) / sizeof(GLuint), GL_UNSIGNED_INT, 0); // 0 = starting index, 6 = num of vertices to be used (6 = 3 (triangle) * 2))
+		glDrawElements(GL_TRIANGLES, sizeof(allIndices) / sizeof(int), GL_UNSIGNED_INT, 0); // 0 = starting index, 6 = num of vertices to be used (6 = 3 (triangle) * 2))
 
 		window.update();
 	} 

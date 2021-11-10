@@ -2,6 +2,9 @@
 #define UTILS_H
 
 #include <vector>
+#include "Mesh.h"
+
+#define log(x) std::cout << x << std::endl;
 
 using std::vector;
 
@@ -37,9 +40,10 @@ namespace Utils { // namespace because im never going to create an instance of t
 
 	static void printVertices(const vector<GLfloat>& vertices) {
 		std::cout << "VERTICES" << std::endl;
-		for (int i = 0; i < vertices.size() / 5; i++) { // 5 = 3 position coords + 2 texture coords
-			for (int k = 0; k < 5; k++) {
-				std::cout << vertices[i * 5 + k] << ((k == 2) ? "  " : " "); // after pos coords do an extra space to show where the texture coords are also take any chance to use a ternary operator cause its so fucking cool
+		
+		for (int i = 0; i < vertices.size() / Mesh::VERTEX_LENGTH; i++) { // Mesh::VERTEX_LENGTH = position coords, color, texture coords
+			for (int k = 0; k < VERTEX_LENGTH; k++) {
+				std::cout << vertices[i * VERTEX_LENGTH + k] << ((k == 2) ? "  " : " "); // after pos coords do an extra space to show where the texture coords are also take any chance to use a ternary operator cause its so fucking cool
 			}
 			std::cout << std::endl;
 		}
@@ -62,6 +66,26 @@ namespace Utils { // namespace because im never going to create an instance of t
 			std::cout << arr[i] << ", ";
 		}
 		std::cout << "]" << std::endl;
+	}
+
+	template<typename T>
+	static T maxInVec(vector<T> vec) {
+		T max = 0;
+		for (T element : vec) {
+			if (element > max){
+				max = element;
+			}
+		}
+		return max;
+	}
+
+	template<typename T>
+	static vector<T> incrementAll(vector<T> vec, float increment) {
+		vector<T> incrementedVec;
+		for (T element : vec) {
+			incrementedVec.push_back(element + increment);
+		}
+		return incrementedVec;
 	}
 
 }
