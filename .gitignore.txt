@@ -2,4 +2,5 @@ glm/
 Libraries/
 Debug/
 glad.c
-x64/Debug/
+x64/
+.vs/
