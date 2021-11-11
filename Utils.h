@@ -8,6 +8,10 @@
 
 using std::vector;
 
+namespace Globals {
+	const unsigned int VERTEX_LENGTH = 5;
+};
+
 namespace Utils { // namespace because im never going to create an instance of this if it were a class
 
 	template<typename T>
@@ -41,9 +45,9 @@ namespace Utils { // namespace because im never going to create an instance of t
 	static void printVertices(const vector<GLfloat>& vertices) {
 		std::cout << "VERTICES" << std::endl;
 		
-		for (int i = 0; i < vertices.size() / Mesh::VERTEX_LENGTH; i++) { // Mesh::VERTEX_LENGTH = position coords, color, texture coords
-			for (int k = 0; k < VERTEX_LENGTH; k++) {
-				std::cout << vertices[i * VERTEX_LENGTH + k] << ((k == 2) ? "  " : " "); // after pos coords do an extra space to show where the texture coords are also take any chance to use a ternary operator cause its so fucking cool
+		for (int i = 0; i < vertices.size() / Globals::VERTEX_LENGTH; i++) { // Mesh::VERTEX_LENGTH = position coords, color, texture coords
+			for (int k = 0; k < Globals::VERTEX_LENGTH; k++) {
+				std::cout << vertices[i * Globals::VERTEX_LENGTH + k] << ((k == 2) ? "  " : " "); // after pos coords do an extra space to show where the texture coords are also take any chance to use a ternary operator cause its so fucking cool
 			}
 			std::cout << std::endl;
 		}
