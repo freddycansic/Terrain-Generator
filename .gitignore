@@ -3,3 +3,4 @@ Libraries/**
 glad.c
 x64/**
 .vs/**
+reports/**
