@@ -1,6 +1,0 @@
-glm/
-Libraries/
-Debug/
-glad.c
-x64/
-.vs/
