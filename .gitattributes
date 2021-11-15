@@ -1,7 +1,7 @@
 * text=auto
 *.frag linguist-language="GLSL"
 *.vert linguist-language="GLSL"
-*.cpp linguist-language
-*.h linguist-language
+*.cpp linguist-language="C++"
+*.h linguist-language="C++"
 glm/** linguist-vendored
 Libraries/** linguist-vendored
