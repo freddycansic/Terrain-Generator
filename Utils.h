@@ -9,7 +9,7 @@
 using std::vector;
 
 namespace Globals {
-	const unsigned int VERTEX_LENGTH = 5;
+	const unsigned int WIDTH = 800, HEIGHT = 800, VERTEX_LENGTH = 5;
 };
 
 namespace Utils { // namespace because im never going to create an instance of this if it were a class
@@ -84,7 +84,7 @@ namespace Utils { // namespace because im never going to create an instance of t
 	}
 
 	template<typename T>
-	static vector<T> incrementAll(vector<T> vec, float increment) {
+	static vector<T> incrementAll(vector<T> vec, T increment) {
 		vector<T> incrementedVec;
 		for (T element : vec) {
 			incrementedVec.push_back(element + increment);

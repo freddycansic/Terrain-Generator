@@ -35,14 +35,14 @@ public:
 	static vector<GLuint> compileAllIndices(const vector<Mesh> &meshes) {
 		
 		vector<GLuint> indices;
-		int lastMaxIndex = 0;
+		unsigned int lastMaxIndex = 0;
 
 		for (Mesh mesh : meshes) {
 			vector<GLuint> nextIndices = mesh.getIndices();
 			nextIndices = Utils::incrementAll(nextIndices, lastMaxIndex);
 			indices = Utils::join(indices, nextIndices); // compile all indices into 1 vec
 
-			lastMaxIndex = Utils::maxInVec(mesh.getIndices()); // get max from last indices
+			lastMaxIndex = Utils::maxInVec(mesh.getIndices()) + lastMaxIndex + 1; // get max from last indices
 		}
 
 		return indices;

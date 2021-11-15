@@ -14,120 +14,55 @@
 #include "VBO.h"
 #include "Window.h"
 #include "Texture.h"
-#include "List.h"
 #include "Cube.h"
 #include "Utils.h"
 
+int x;
+
 using std::cout;
 using std::endl;
+using namespace Globals;
 
-const unsigned int WIDTH = 800, HEIGHT = 800;
-
-GLfloat red = 0.0f, green = 0.0f, blue = 0.0f;
-
-float xMove = 0.0f;
-
-// Vertices coordinates
-//GLfloat vertices[] =
-//{ //     coords            texCoords 
 //	-0.5f, -0.5f, -0.5f, 1.0f, 0.0f,  // 0 pyramid
 //	-0.5f, -0.5f, 0.5f,  1.0f, 0.0f,  // 1
 //	0.5f, -0.5f, 0.5f,   0.0f, 1.0f,  // 2
 //	0.5f, -0.5f, -0.5f,  0.0f, 0.0f,  // 3
 //	0.0f, 0.7f, 0.0f,    1.0f, 1.0f,  // 4
 //
-//	-0.5f + xMove, -0.5f, -0.5f,  0.0f, 0.0f,   // back left bottom   5 cube
-//	-0.5f + xMove, -0.5f, 0.5f, 0.0f, 1.0f,   // front left bottom  6
-//	0.5f + xMove, -0.5f, 0.5f,  1.0f, 1.0f,   // front right bottom 7
-//	0.5f + xMove, -0.5f, -0.5f,   1.0f, 0.0f,   // back right bottom  8
-//	-0.5f + xMove, 0.5f, -0.5f,   0.0f, 0.0f,  // back left top       9
-//	-0.5f + xMove, 0.5f, 0.5f,    0.0f, 1.0f,  // front left top      10
-//	0.5f + xMove, 0.5f, 0.5f,     1.0f, 1.0f,  // front right top     11
-//	0.5f + xMove, 0.5f, -0.5f,  1.0f, 0.0f   // back right top      12
-//};
+//  0, 1, 2,  // pyramid
+//	0, 2, 3,
+//	0, 1, 4,
+//	1, 2, 4,
+//	2, 3, 4,
+//	3, 0, 4,
 //
-//// Indices for vertices order
-//GLuint indices[] =
-//{
-//	//0, 1, 2,  // pyramid
-//	//0, 2, 3,
-//	//0, 1, 4,
-//	//1, 2, 4,
-//	//2, 3, 4,
-//	//3, 0, 4,
-//
-//	5, 8, 6, // bottom face
-//	8, 7, 6,
-//	5, 8, 12, // back face
-//	5, 9, 12,
-//	5, 6, 9, // left face
-//	6, 9, 10,
-//	7, 8, 11, // right face
-//	8, 12, 11,
-//	9, 10, 12, // top face
-//	10, 11, 12,
-//	6, 7, 11, // front face
-//	6, 10, 11
-//};
 
-GLfloat cubeVertices[] = {
-	-0.5, -0.5, -0.5f,  0, 0,
-	0.5, 1, 1.5,  1, 0,
-	0, 1, 1,  1, 1,
-	-0.5, 1, 1,  0, 0,
-	0, 1.5, 1.5,  0, 0,
-	0.5, 1.5, 1.5,  1, 1,
-	0, 1.5, 1,  0, 0,
-	-0.5, 1.5, 1,  1, 1,
-};
-
-GLuint cubeIndices[]{
-	0, 1, 2,
-	0, 2, 3,
-	4, 5, 6,
-	4, 6, 7,
-	0, 1, 4,
-	1, 4, 5,
-	3, 2, 7,
-	2, 7, 6,
-	1, 2, 6,
-	1, 6, 2,
-	0, 3, 4,
-	3, 4, 7
-};
-
-// Mesh declarations
-Cube cube1(1.0f, 0.0f, 0.0f, 0.0f);
-
-vector<Mesh> meshes = {cube1};
+vector<Mesh> meshes;
 
 int main() {
-	vector<GLfloat> allVecVertices = Mesh::compileAllVertices(meshes);
+	// Mesh declaration
 
-	//Utils::printVec(allVecVertices);
-	log("VEC VERTICES =");
-	Utils::printVertices(allVecVertices);
+	for (float i = -10; i < 10; i++) {
+		for (float k = -10; k < 10; k++) {
+			meshes.push_back(*(new Cube(0.5f, i, k, 0.0f)));
+		}
+	}
+
+	//***************************************************************************************************
+
+	vector<GLfloat> allVecVertices = Mesh::compileAllVertices(meshes);
 
 	GLfloat* allVertices = new GLfloat[allVecVertices.size()]; // arr on heap because array size needs to be "dynamic"
 	for (unsigned int i = 0; i < allVecVertices.size(); i++) { // for every in allglvertices
 		allVertices[i] = allVecVertices[i];
 	}
 
-	log("ARR VERTICES =");
-	Utils::printArr(allVertices, allVecVertices.size());
-
 	vector<GLuint> allVecIndices = Mesh::compileAllIndices(meshes);
 	
-	log("VEC INDICES =");
-	Utils::printIndices(allVecIndices);
-
 	GLuint* allIndices = new GLuint[allVecIndices.size()];
 	for (unsigned int i = 0; i < allVecIndices.size(); i++) {
 		allIndices[i] = allVecIndices[i];
 	}
-
-	log("ARR INDICES =");
-	Utils::printArr(allIndices, allVecIndices.size());
 
 	//***************************************************************************************************
 
@@ -145,8 +80,8 @@ int main() {
 	// Binding and adding data to buffers
 	VAO1.bind();
 
-	VBO VBO1(allVertices, sizeof(allVertices));
-	EBO EBO1(allIndices, sizeof(allIndices));
+	VBO VBO1(allVertices, sizeof(GLfloat) * allVecVertices.size());
+	EBO EBO1(allIndices, sizeof(GLuint) * allVecIndices.size());
 
 	VAO1.linkAttrib(VBO1, 0, 3, GL_FLOAT, 5 * sizeof(float), (void*)0); // links position to layout
 	//VAO1.linkAttrib(VBO1, 1, 3, GL_FLOAT, 8 * sizeof(float), (void*)(3 * sizeof(float))); // links color to layout
@@ -207,7 +142,7 @@ int main() {
 		VAO1.bind();
 
 		// Draw
-		glDrawElements(GL_TRIANGLES, sizeof(allIndices) / sizeof(GLuint), GL_UNSIGNED_INT, 0); // 0 = starting index, 6 = num of vertices to be used (6 = 3 (triangle) * 2))
+		glDrawElements(GL_TRIANGLES, (GLsizei) allVecIndices.size(), GL_UNSIGNED_INT, 0); // 0 = starting index, 6 = num of vertices to be used (6 = 3 (triangle) * 2))
 
 		window.update();
 	} 
