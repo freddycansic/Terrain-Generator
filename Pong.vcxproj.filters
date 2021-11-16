@@ -61,7 +61,10 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="CubeMapTexture.cpp">
+      <Filter>Source Files\Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -93,7 +96,10 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeMapTexture.h">
+      <Filter>Header Files\Engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

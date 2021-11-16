@@ -39,7 +39,6 @@ Texture::Texture(const char* filePath, GLenum target, GLuint magFiltering, GLuin
 			glTexImage2D(target, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data); // if not png or bmp then dont use alpha channel
 		}
 		
-
 		glGenerateMipmap(target); // generate mipmaps
 	}
 	else {

@@ -2,9 +2,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <stb/stb_image.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 #include <ctime>
 #include <cstdlib>
 #include <thread>
@@ -24,34 +21,6 @@ using std::cout;
 using std::endl;
 using namespace Globals;
 
-//	-0.5f, -0.5f, -0.5f, 1.0f, 0.0f,  // 0 pyramid
-//	-0.5f, -0.5f, 0.5f,  1.0f, 0.0f,  // 1
-//	0.5f, -0.5f, 0.5f,   0.0f, 1.0f,  // 2
-//	0.5f, -0.5f, -0.5f,  0.0f, 0.0f,  // 3
-//	0.0f, 0.7f, 0.0f,    1.0f, 1.0f,  // 4
-//
-//  0, 1, 2,  // pyramid
-//	0, 2, 3,
-//	0, 1, 4,
-//	1, 2, 4,
-//	2, 3, 4,
-//	3, 0, 4,
-//
-
-glm::vec3 cubePos[] = {
-	
-	glm::vec3(1.0f, 0.3f, 0.4f),
-	glm::vec3(0.1f, 0.4f, 0.1f),
-	glm::vec3(0.2f, 0.1f, 0.3f),
-	glm::vec3(0.3f, 0.5f, 0.25f),
-	glm::vec3(0.5f, 0.7f, 0.6f),
-	glm::vec3(0.8f, 0.5f, 0.75f),
-	glm::vec3(0.3f, 0.3f, 0.25f),
-	glm::vec3(0.7f, 0.2f, 0.65f),
-	glm::vec3(0.3f, 0.5f, 0.25f),
-
-};
-
 int main() {
 	// Mesh declaration
 	vector<Mesh> meshes;
@@ -66,10 +35,9 @@ int main() {
 
 	//***************************************************************************************************
 	const auto start = std::chrono::system_clock::now();
-
-	vector<GLfloat> allVecVertices;// = Mesh::compileAllVertices(meshes);
 	
 	//Compile vertices on a separate thread
+	vector<GLfloat> allVecVertices;
 	std::thread t1([&allVecVertices, meshes]() mutable {
 		allVecVertices = Mesh::compileAllVertices(meshes);
 	});
@@ -82,9 +50,6 @@ int main() {
 	
 	t1.join(); // wait for both threads to finish
 	t2.join();
-
-	//vector<GLfloat> allVecVertices = Mesh::compileAllVertices(meshes);
-	//vector<GLuint> allVecIndices = Mesh::compileAllIndices(meshes);
 
 	GLfloat* allVertices = new GLfloat[allVecVertices.size()]; // arr on heap because array size needs to be "dynamic"
 	for (unsigned int i = 0; i < allVecVertices.size(); i++) { // for every in allglvertices
@@ -111,7 +76,6 @@ int main() {
 	//***************************************************************************************************
 
 	Window window(WIDTH, HEIGHT, "Help me");
-	window.create();
 
 	gladLoadGL(); // configure opengl with glad
 	glViewport(0, 0, WIDTH, HEIGHT); // sets view to 0-900 width, 0-900 height
@@ -138,24 +102,31 @@ int main() {
 	Texture tex("uvTest.jpg", GL_TEXTURE_2D, GL_NEAREST, GL_NEAREST, GL_REPEAT);
 
 	// initialise camera
-	Camera camera;
+	Camera camera(window.getWindow());
 
 	// configure opengl
 	glEnable(GL_DEPTH_TEST); // dont draw triangles that are behind other triangles
 
 	while (!window.shouldClose()) {
-		glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // clear back buffer with black
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // clear back buffer with color
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		shaderProgram.activate();
 		tex.bind();
 
-		camera.update(shaderProgram.ID, window.getWindow());
+		camera.update(shaderProgram.ID, window.getWindow()); // recalculates matrices and handles movement
 
 		VAO1.bind();
 
+		glDrawElements(GL_TRIANGLES, (GLsizei)allVecIndices.size(), GL_UNSIGNED_INT, 0); // 0 = starting index, 6 = num of vertices to be used (6 = 3 (triangle) * 2))
+
 		// Draw
-		glDrawElements(GL_TRIANGLES, (GLsizei) allVecIndices.size(), GL_UNSIGNED_INT, 0); // 0 = starting index, 6 = num of vertices to be used (6 = 3 (triangle) * 2))
+		//std::thread t3([allVecIndices, allIndices]() {
+		//	glDrawRangeElements(GL_TRIANGLES, 0, allIndices[allVecIndices.size() / 2], allVecIndices.size() / 2,
+		//		GL_UNSIGNED_INT, 0);
+		//});
+
+		//t3.join();
 
 		window.update();
 	} 

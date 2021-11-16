@@ -9,11 +9,12 @@ public:
 	Window(const unsigned int height, const unsigned int width, const char* title);
 	~Window();
 
-	void create();
 	bool shouldClose();
 	void update();
 
 	GLFWwindow* getWindow();
+
+	//void setCursorPosCallback(GLFWcursorposfun func);
 
 private:
 	GLFWwindow* window;

@@ -4,8 +4,6 @@
 #include <iostream>
 #include <vector>
 
-#define log(x) std::cout << x << std::endl;
-
 using std::vector;
 
 namespace Globals {

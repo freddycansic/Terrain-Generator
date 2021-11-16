@@ -9,17 +9,19 @@
 #include <GLFW/glfw3.h>
 
 using namespace Globals;
-using namespace glm;
+using glm::mat4;
+using glm::vec3;
 
 class Camera {
 
 public:
 	
+	Camera(GLFWwindow* window);
 	void update(GLuint shaderProgramID, GLFWwindow* window);
 
 private:
 
-	void processMovement(GLFWwindow* window);
+	void processKeyInput(GLFWwindow* window);
 
 	GLuint shaderProgramID;
 	GLFWwindow* window;
@@ -27,10 +29,6 @@ private:
 	mat4 model;
 	mat4 proj;
 	mat4 view;
-
-	vec3 cameraPos;
-	vec3 cameraFront;
-	vec3 cameraUp;
 };
 
 #endif
