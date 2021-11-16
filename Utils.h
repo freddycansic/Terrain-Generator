@@ -1,8 +1,8 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include <iostream>
 #include <vector>
-#include "Mesh.h"
 
 #define log(x) std::cout << x << std::endl;
 
@@ -92,6 +92,6 @@ namespace Utils { // namespace because im never going to create an instance of t
 		return incrementedVec;
 	}
 
-}
+};
 
 #endif

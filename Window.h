@@ -13,11 +13,14 @@ public:
 	bool shouldClose();
 	void update();
 
+	GLFWwindow* getWindow();
+
 private:
 	GLFWwindow* window;
 	unsigned int height;
 	unsigned int width;
 	const char* title;
+	void processInput(GLFWwindow* window);
 };
 
 #endif

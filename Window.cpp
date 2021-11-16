@@ -28,7 +28,18 @@ bool Window::shouldClose() {
 	return glfwWindowShouldClose(window);
 }
 
+void Window::processInput(GLFWwindow* window) {
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+		glfwSetWindowShouldClose(window, GLFW_TRUE);
+	}
+}
+
+GLFWwindow* Window::getWindow() {
+	return window;
+}
+
 void Window::update() {
+	processInput(window);
 	glfwSwapBuffers(window); // swap front and back buffer
 	glfwPollEvents(); // check for events
 }
