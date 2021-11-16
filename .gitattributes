@@ -1,6 +1,3 @@
-*.frag linguist-language=GLSL
-*.vert linguist-language=GLSL
-*.cpp linguist-language=C++
-*.h linguist-language=C++
-glm/** linguist-vendored
-Libraries/** linguist-vendored
+glm/glm/** linguist-detectable=false
+Libraries/** linguist-detectable=false
+glad.c linguist-detectable=false
