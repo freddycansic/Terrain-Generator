@@ -14,7 +14,7 @@ uniform mat4 view;
 
 void main()
 {
-	gl_Position = vec4(inPos, 1.0) * model * proj * view; // sums up all matrices
+	gl_Position = proj * view * model * vec4(inPos, 1.0); // sums up all matrices
 	//color = inColor;
 	texCoords = inTexCoords;
 }

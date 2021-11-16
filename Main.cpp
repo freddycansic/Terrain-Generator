@@ -7,6 +7,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <ctime>
 #include <cstdlib>
+#include <thread>
 
 #include "Shader.h"
 #include "EBO.h"
@@ -16,8 +17,6 @@
 #include "Texture.h"
 #include "Cube.h"
 #include "Utils.h"
-
-int x;
 
 using std::cout;
 using std::endl;
@@ -37,32 +36,63 @@ using namespace Globals;
 //	3, 0, 4,
 //
 
-vector<Mesh> meshes;
+
 
 int main() {
 	// Mesh declaration
+	vector<Mesh> meshes;
 
-	for (float i = -10; i < 10; i++) {
-		for (float k = -10; k < 10; k++) {
-			meshes.push_back(*(new Cube(0.5f, i, k, 0.0f)));
+	for (int i = -50; i < 50; i++) {
+		for (int k = -50; k < 50; k++) {
+			meshes.push_back(*(new Cube(0.5f, i / 2, k / 2, 0.0f)));
 		}
 	}
 
+	assert(meshes.size());
 	//***************************************************************************************************
+	const auto start = std::chrono::system_clock::now();
 
-	vector<GLfloat> allVecVertices = Mesh::compileAllVertices(meshes);
+	vector<GLfloat> allVecVertices;// = Mesh::compileAllVertices(meshes);
+	
+	//Compile vertices on a separate thread
+	std::thread t1([&allVecVertices, meshes]() mutable {
+		allVecVertices = Mesh::compileAllVertices(meshes);
+	});
+
+	// Compile indices on a separate thread
+	vector<GLuint> allVecIndices;
+	std::thread t2([&allVecIndices, meshes]() mutable {
+		allVecIndices = Mesh::compileAllIndices(meshes);
+	});
+	
+	t1.join(); // wait for both threads to finish
+	t2.join();
+
+	//vector<GLfloat> allVecVertices = Mesh::compileAllVertices(meshes);
+	//vector<GLuint> allVecIndices = Mesh::compileAllIndices(meshes);
 
 	GLfloat* allVertices = new GLfloat[allVecVertices.size()]; // arr on heap because array size needs to be "dynamic"
 	for (unsigned int i = 0; i < allVecVertices.size(); i++) { // for every in allglvertices
 		allVertices[i] = allVecVertices[i];
 	}
 
-	vector<GLuint> allVecIndices = Mesh::compileAllIndices(meshes);
-	
 	GLuint* allIndices = new GLuint[allVecIndices.size()];
 	for (unsigned int i = 0; i < allVecIndices.size(); i++) {
 		allIndices[i] = allVecIndices[i];
 	}
+
+
+	auto end = std::chrono::system_clock::now();
+	std::cout << "Compiling took: " << (float) ((end - start) / 10000000.0f).count() << "s" << std::endl;
+
+	assert(allVecIndices.size()); // check that threads returned something
+	assert(allVecVertices.size());
+
+	//Utils::printVertices(allVecVertices);
+	//Utils::printIndices(allVecIndices);
+
+	//Utils::printArr(allVertices, allVecVertices.size());
+	//Utils::printArr(allIndices, allVecIndices.size());
 
 	//***************************************************************************************************
 
@@ -84,7 +114,6 @@ int main() {
 	EBO EBO1(allIndices, sizeof(GLuint) * allVecIndices.size());
 
 	VAO1.linkAttrib(VBO1, 0, 3, GL_FLOAT, 5 * sizeof(float), (void*)0); // links position to layout
-	//VAO1.linkAttrib(VBO1, 1, 3, GL_FLOAT, 8 * sizeof(float), (void*)(3 * sizeof(float))); // links color to layout
 	VAO1.linkAttrib(VBO1, 1, 2, GL_FLOAT, 5 * sizeof(float), (void*)(3 * sizeof(float))); // links texture coords to layout
 
 	// unbind to not accidentally modify
@@ -96,16 +125,11 @@ int main() {
 	Texture tex("uvTest.jpg", GL_TEXTURE_2D, GL_NEAREST, GL_NEAREST, GL_REPEAT);
 
 	// configure opengl
-	
 	glEnable(GL_DEPTH_TEST); // dont draw triangles that are behind other triangles
 
 	while (!window.shouldClose()) {
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // clear back buffer with black
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		//blue < 1.0f ? blue += (float(rand()) / float((RAND_MAX)) * 0.02f) : blue = 0;
-		//red < 1.0f ? red += (float(rand()) / float((RAND_MAX)) * 0.02f) : red = 0;
-		//green < 1.0f ? green += (float(rand()) / float((RAND_MAX)) * 0.02f) : green = 0;
 
 		shaderProgram.activate();
 		tex.bind();
@@ -119,7 +143,7 @@ int main() {
 		glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraDirection)); // or this
 		glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight); // or this
 
-		glm::mat4 model = glm::mat4(1.0f); // iitialise identity matrices
+		glm::mat4 model = glm::mat4(1.0f); // initialise identity matrices
 		glm::mat4 proj = glm::mat4(1.0f);
 		glm::mat4 view = glm::mat4(1.0f);
 
@@ -127,7 +151,7 @@ int main() {
 		model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(1.0f, 1.0f, 1.0f)); // vec3 = axis to rotate on
 
 		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -2.0f)); // moves camera away from object by 2 units and down 1/2 units
-		proj = glm::perspective(glm::radians(45.0f), (float)WIDTH / HEIGHT, 1.0f, 100.0f); // fov, aspect ratio, closest clipping point, furthest clipping point. basically render distance
+		proj = glm::perspective(glm::radians(45.0f), (float)WIDTH / HEIGHT, 1.0f, 1000.0f); // fov, aspect ratio, closest clipping point, furthest clipping point. basically render distance
 
 		// uniforms
 		GLuint modelLoc = glGetUniformLocation(shaderProgram.ID, "model");
