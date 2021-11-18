@@ -7,7 +7,7 @@
 using std::vector;
 
 namespace Globals {
-	const unsigned int WIDTH = 800, HEIGHT = 800, VERTEX_LENGTH = 5;
+	const unsigned int WIDTH = 800, HEIGHT = 800, VERTEX_LENGTH = 6;
 };
 
 namespace Utils { // namespace because im never going to create an instance of this if it were a class

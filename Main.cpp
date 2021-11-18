@@ -5,6 +5,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <thread>
+#include <string>
 
 #include "Shader.h"
 #include "EBO.h"
@@ -16,6 +17,7 @@
 #include "Utils.h"
 #include "Camera.h"
 #include "Mesh.h"
+#include "CubeMapTexture.h"
 
 using std::cout;
 using std::endl;
@@ -90,8 +92,8 @@ int main() {
 	VBO VBO1(allVertices, sizeof(GLfloat) * allVecVertices.size());
 	EBO EBO1(allIndices, sizeof(GLuint) * allVecIndices.size());
 
-	VAO1.linkAttrib(VBO1, 0, 3, GL_FLOAT, 5 * sizeof(float), (void*)0); // links position to layout
-	VAO1.linkAttrib(VBO1, 1, 2, GL_FLOAT, 5 * sizeof(float), (void*)(3 * sizeof(float))); // links texture coords to layout
+	VAO1.linkAttrib(VBO1, 0, 3, GL_FLOAT, VERTEX_LENGTH * sizeof(float), (void*)0); // links position to layout
+	VAO1.linkAttrib(VBO1, 1, 3, GL_FLOAT, VERTEX_LENGTH * sizeof(float), (void*)(3 * sizeof(float))); // links texture coords to layout
 
 	// unbind to not accidentally modify
 	VAO1.unbind();
@@ -99,7 +101,9 @@ int main() {
 	EBO1.unbind();
 
 	// initialise texture
-	Texture tex("uvTest.jpg", GL_TEXTURE_2D, GL_NEAREST, GL_NEAREST, GL_REPEAT);
+	//Texture tex("uvTest.jpg", GL_TEXTURE_2D, GL_NEAREST, GL_NEAREST, GL_REPEAT);
+	vector<string> filePaths = {"uvTest.jpg", "uvTest.jpg", "uvTest.jpg", "uvTest.jpg", "uvTest.jpg", "uvTest.jpg", };
+	CubeMapTexture cubeMap(filePaths, GL_NEAREST, GL_NEAREST);
 
 	// initialise camera
 	Camera camera(window.getWindow());
@@ -112,7 +116,8 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		shaderProgram.activate();
-		tex.bind();
+		//tex.bind();
+		cubeMap.bind();
 
 		camera.update(shaderProgram.ID, window.getWindow()); // recalculates matrices and handles movement
 

@@ -5,11 +5,18 @@
 #include <glad/glad.h>
 #include <iostream>
 #include <string>
+#include <vector>
+
+using std::vector;
+using std::string;
 
 class CubeMapTexture
 {
 public:
-	CubeMapTexture(const char* filePath);
+	~CubeMapTexture();
+	CubeMapTexture(vector<string> filePaths, GLenum magFiltering, GLenum minFiltering);
+	void bind();
+	void unbind();
 
 private:
 	int width;
