@@ -22,8 +22,8 @@ void mouseCallback(GLFWwindow* window, double xPos, double yPos) {
 		firstMouse = false;
 	}
 
-	float xOffset = xPos - lastX;
-	float yOffset = lastY - yPos;
+	double xOffset = xPos - lastX;
+	double yOffset = lastY - yPos;
 
 	lastX = xPos;
 	lastY = yPos;
@@ -39,9 +39,9 @@ void mouseCallback(GLFWwindow* window, double xPos, double yPos) {
 	if (pitch < -89.0f) pitch = -89.0f; // same but only can look down as far as their feet
 
 	glm::vec3 direction;
-	direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-	direction.y = sin(glm::radians(pitch));
-	direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+	direction.x = cos(glm::radians((float)yaw)) * cos(glm::radians((float)pitch));
+	direction.y = sin(glm::radians((float)pitch));
+	direction.z = sin(glm::radians((float)yaw)) * cos(glm::radians((float)pitch));
 	cameraFront = glm::normalize(direction);
 }
 
@@ -78,7 +78,7 @@ void Camera::update(GLuint shaderProgramID, GLFWwindow* window) {
 }
 
 void Camera::processKeyInput(GLFWwindow* window) {
-	float cameraSpeed = 2.5f * deltaTime; // deltatime = time taken for last frame to render
+	float cameraSpeed = 2.5f * (float) deltaTime; // deltatime = time taken for last frame to render
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
 		cameraPos += cameraSpeed * cameraFront;
