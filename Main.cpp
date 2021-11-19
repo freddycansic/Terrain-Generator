@@ -27,14 +27,16 @@ int main() {
 	// Mesh declaration
 	vector<Mesh> meshes;
 
-	for (float i = -5; i < 5; i++) {
-		for (float k = -5; k < 5; k++) {
-			for (float j = -5; j < 5; j++) {
-				meshes.push_back(*(new Cube(0.5f, i, k, j)));
-			}
+	vector<GLfloat> allCubeYPos = Utils::noiseGenerator(20, 5, 2.0f);
+
+	for (float j = -10; j < 10; j += 0.5f) {
+		for (float i = allCubeYPos.size() / -2, k = 0;
+			i < (allCubeYPos.size() / 2) - 1 && k < allCubeYPos.size() - 1;
+			i += 0.5f, k++) {
+			meshes.push_back(*(new Cube(0.5f, i, allCubeYPos[k], j)));
 		}
 	}
-
+	
 	//***************************************************************************************************
 	const auto start = std::chrono::system_clock::now();
 	

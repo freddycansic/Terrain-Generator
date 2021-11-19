@@ -18,8 +18,11 @@ Window::Window(const unsigned int height, const unsigned int width, const char* 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // set opengl version
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // use modern opengl functions
-	
-	window = glfwCreateWindow(width, height, title, NULL, NULL);
+
+	GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+	const GLFWvidmode* vidmode = glfwGetVideoMode(monitor);
+
+	window = glfwCreateWindow(vidmode->width, vidmode->height, title, NULL, NULL);
 
 	if (window == NULL) {
 		glfwTerminate();

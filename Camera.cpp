@@ -9,7 +9,7 @@ double deltaTime = 0.0f;
 double lastFrame = 0.0f;
 double currentFrame = 0.0f;
 
-double yaw = 0.0, pitch = 0.0, lastX = 0.0, lastY = 0.0;
+double yaw = -90.0, pitch = 0.0, lastX = 0.0, lastY = 0.0; // yaw = -90 to counteract random camera movement on first frame
 bool firstMouse = true;
 
 void mouseCallback(GLFWwindow* window, double xPos, double yPos) {

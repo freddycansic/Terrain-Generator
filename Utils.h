@@ -3,11 +3,13 @@
 
 #include <iostream>
 #include <vector>
+#include <random>
+#include <time.h>
 
 using std::vector;
 
 namespace Globals {
-	const unsigned int WIDTH = 800, HEIGHT = 800, VERTEX_LENGTH = 6;
+	const unsigned int WIDTH = 1920, HEIGHT = 1080, VERTEX_LENGTH = 6;
 };
 
 namespace Utils { // namespace because im never going to create an instance of this if it were a class
@@ -90,6 +92,42 @@ namespace Utils { // namespace because im never going to create an instance of t
 		return incrementedVec;
 	}
 
+	static vector<GLfloat> noiseGenerator(unsigned int permutations, unsigned int resolution, float max) {
+		srand((unsigned int) time(NULL));
+		
+		vector<GLfloat> majorPoints;
+		for (unsigned int i = 0; i < permutations; i++) {
+			majorPoints.push_back((GLfloat)randf(max)); // populate major points with random values
+		}
+
+		//printVec(majorPoints);
+
+		vector<GLfloat> allPoints;
+		for (unsigned int i = 0; i < majorPoints.size(); i++) { // for every major point
+
+			//std::cout << "majorPoints[" << i << "]" << std::endl;
+
+			GLfloat currentPoint = majorPoints[i];
+			if (i + 1 > (majorPoints.size() - 2)) return allPoints; // if next point is greater than the number of major points
+			GLfloat nextPoint = majorPoints[i + 1];
+
+			//std::cout << "Current point = " << currentPoint << std::endl;
+			//std::cout << "Next point = " << nextPoint << std::endl;
+
+			if (currentPoint < nextPoint) { // if current point is lower than next point 
+				for (GLfloat k = currentPoint; // from the current point
+					k < nextPoint; // to the next point
+					k += (nextPoint - currentPoint) / resolution) { // increment by the difference / resolution e.g difference = 0.5, increment by 0.5/5 = 0.1 each time
+						allPoints.push_back(k);
+				}
+			}
+			else { // if current point is higher than the next point
+				for (GLfloat k = currentPoint; k > nextPoint; k -= (currentPoint - nextPoint) / resolution) {
+					allPoints.push_back(k);
+				}
+			}
+		}
+	}
 };
 
 #endif
