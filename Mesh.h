@@ -22,7 +22,6 @@ class Mesh
 
 			for (Mesh mesh : meshes) { // for every mesh
 				// at the end of allVertices, append the next set of vertices from mesh[i]
-			//	vector::iter
 				allVertices = Utils::join(allVertices, mesh.getVertices());
 				//allVertices.insert(allVertices.end(), mesh.getVertices().begin(), mesh.getVertices().end()); // WEIRD ERROR
 			}

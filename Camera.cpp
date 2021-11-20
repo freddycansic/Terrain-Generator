@@ -71,14 +71,19 @@ void Camera::update(GLuint shaderProgramID, GLFWwindow* window) {
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 
 	GLuint modelLoc = glGetUniformLocation(shaderProgramID, "model");
-	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model)); // 1 = num of matrices, false = dont do weird matrix maths shit, valueptr = get pointer to matrix instead of actual matrix data
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model)); // 1 = num of matrices, false = dont do weird matrix maths stuff, valueptr = get pointer to matrix instead of actual matrix data
 
 	GLuint projLoc = glGetUniformLocation(shaderProgramID, "proj");
 	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(proj));
+
 }
 
 void Camera::processKeyInput(GLFWwindow* window) {
 	float cameraSpeed = 2.5f * (float) deltaTime; // deltatime = time taken for last frame to render
+	
+	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) { // sprinting
+		cameraSpeed *= 2;
+	}
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
 		cameraPos += cameraSpeed * cameraFront;
