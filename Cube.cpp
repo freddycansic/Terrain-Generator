@@ -5,15 +5,15 @@ Cube::Cube(GLfloat size, GLfloat x, GLfloat y, GLfloat z) {
 
 	GLfloat halfSize = size / 2;
 
-	vertices = Utils::join(vertices, vector<GLfloat>{ x - halfSize, y - halfSize, z - halfSize, -0.5f, -0.5f, -0.5f} ); // bottom front left
-    vertices = Utils::join(vertices, vector<GLfloat>{ x + halfSize, y - halfSize, z - halfSize, 0.5f, -0.5f, -0.5f} ); // bottom front right
-	vertices = Utils::join(vertices, vector<GLfloat>{ x + halfSize, y - halfSize, z + halfSize, 0.5f, -0.5f, 0.5f} ); // bottom back right
-	vertices = Utils::join(vertices, vector<GLfloat>{ x - halfSize, y - halfSize, z + halfSize, -0.5f, -0.5f, 0.5f} ); // bottom back left
-
-	vertices = Utils::join(vertices, vector<GLfloat>{ x - halfSize, y + halfSize, z - halfSize, -0.5f, 0.5f, -0.5f} ); // top front left
-	vertices = Utils::join(vertices, vector<GLfloat>{ x + halfSize, y + halfSize, z - halfSize, 0.5f, 0.5f, -0.5f} ); // top front right
-	vertices = Utils::join(vertices, vector<GLfloat>{ x + halfSize, y + halfSize, z + halfSize, 0.5f, 0.5f, 0.5f} ); // top back right
-	vertices = Utils::join(vertices, vector<GLfloat>{ x - halfSize, y + halfSize, z + halfSize, -0.5f, 0.5f, 0.5f} ); // top back left
+	vertices = Utils::join(vertices, array<GLfloat, 6>{ x - halfSize, y - halfSize, z - halfSize, -0.5f, -0.5f, -0.5f}); // bottom front left
+    vertices = Utils::join(vertices, array<GLfloat, 6>{ x + halfSize, y - halfSize, z - halfSize, 0.5f, -0.5f, -0.5f} ); // bottom front right
+	vertices = Utils::join(vertices, array<GLfloat, 6>{ x + halfSize, y - halfSize, z + halfSize, 0.5f, -0.5f, 0.5f} ); // bottom back right
+	vertices = Utils::join(vertices, array<GLfloat, 6>{ x - halfSize, y - halfSize, z + halfSize, -0.5f, -0.5f, 0.5f} ); // bottom back left
+									 
+	vertices = Utils::join(vertices, array<GLfloat, 6>{ x - halfSize, y + halfSize, z - halfSize, -0.5f, 0.5f, -0.5f} ); // top front left
+	vertices = Utils::join(vertices, array<GLfloat, 6>{ x + halfSize, y + halfSize, z - halfSize, 0.5f, 0.5f, -0.5f} ); // top front right
+	vertices = Utils::join(vertices, array<GLfloat, 6>{ x + halfSize, y + halfSize, z + halfSize, 0.5f, 0.5f, 0.5f} ); // top back right
+	vertices = Utils::join(vertices, array<GLfloat, 6>{ x - halfSize, y + halfSize, z + halfSize, -0.5f, 0.5f, 0.5f} ); // top back left
 	
 	setVertices(vertices);
 

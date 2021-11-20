@@ -37,6 +37,17 @@ namespace Utils { // namespace because im never going to create an instance of t
 		return vector1; // append second vector at the end of the first vector, from range 0 - len of vector2
 	}
 
+	template<typename T, size_t size>
+	static vector<T> join(vector<T> &vector, const array<T, size> &array) {
+		vector.reserve(array.size());
+
+		for (const T& element : array) {
+			vector.push_back(element);
+		}
+
+		return vector;
+	}
+
 	static float randf(float max) {
 		return (float(rand()) / float((RAND_MAX)) * max);
 	}
@@ -105,6 +116,8 @@ namespace Utils { // namespace because im never going to create an instance of t
 	static vector<GLfloat> noiseGenerator(unsigned int permutations, unsigned int resolution, float max) {
 		srand((unsigned int) time(NULL));
 		
+		//******************************* GENERATE IN X DIRECTION *******************************
+
 		vector<GLfloat> majorPoints;
 		majorPoints.reserve(permutations);
 
@@ -117,14 +130,9 @@ namespace Utils { // namespace because im never going to create an instance of t
 
 		for (unsigned int i = 0; i < majorPoints.size(); i++) { // for every major point
 
-			//std::cout << "majorPoints[" << i << "]" << std::endl;
-
 			GLfloat currentPoint = majorPoints[i];
-			if (i + 1 > (majorPoints.size() - 2)) return allPoints; // if next point is greater than the number of major points
+			if (i + 1 > (majorPoints.size() - 2)) break; // if next point is greater than the number of major points
 			GLfloat nextPoint = majorPoints[i + 1];
-
-			//std::cout << "Current point = " << currentPoint << std::endl;
-			//std::cout << "Next point = " << nextPoint << std::endl;
 
 			if (currentPoint < nextPoint) { // if current point is lower than next point 
 				for (GLfloat k = currentPoint; // from the current point
@@ -139,6 +147,44 @@ namespace Utils { // namespace because im never going to create an instance of t
 				}
 			}
 		}
+		
+		Utils::printVec(majorPoints);
+
+		//******************************* GENERATE IN Z DIRECTION *******************************
+
+		majorPoints.clear();
+
+		for (unsigned int i = 0; i < permutations; i++) {
+			majorPoints.push_back((GLfloat)randf(max)); // populate major points with random values
+		}
+
+		allPoints.reserve((majorPoints.size() - 1) * resolution);
+
+		for (unsigned int i = 0; i < majorPoints.size(); i++) { // for every major point
+
+			GLfloat currentPoint = majorPoints[i];
+			if (i + 1 > (majorPoints.size() - 2)) break; // if next point is greater than the number of major points
+			GLfloat nextPoint = majorPoints[i + 1];
+
+			if (currentPoint < nextPoint) { // if current point is lower than next point 
+				for (GLfloat k = currentPoint; // from the current point
+					k < nextPoint; // to the next point
+					k += (nextPoint - currentPoint) / resolution) { // increment by the difference / resolution e.g difference = 0.5, increment by 0.5/5 = 0.1 each time
+					allPoints.push_back(k);
+				}
+			}
+			else { // if current point is higher than the next point
+				for (GLfloat k = currentPoint; k > nextPoint; k -= (currentPoint - nextPoint) / resolution) {
+					allPoints.push_back(k);
+				}
+			}
+		}
+		std::cout << "2nd" << std::endl;
+		Utils::printVec(majorPoints);
+
+
+		return allPoints;
+
 	}
 };
 

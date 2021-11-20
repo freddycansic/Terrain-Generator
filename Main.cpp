@@ -24,21 +24,24 @@ using std::endl;
 using namespace Globals;
 
 int main() {
+	const auto start = std::chrono::system_clock::now(); // start benchmark
+
 	// Mesh declaration
 	vector<Mesh> meshes;
 
 	vector<GLfloat> allCubeYPos = Utils::noiseGenerator(20, 5, 2.0f);
+	meshes.reserve(allCubeYPos.size());
 
 	for (float j = -10; j < 10; j += 0.5f) {
 		for (float i = allCubeYPos.size() / -2, k = 0;
 			i < (allCubeYPos.size() / 2) - 1 && k < allCubeYPos.size() - 1;
 			i += 0.5f, k++) {
-			meshes.push_back(*(new Cube(0.5f, i, allCubeYPos[k], j)));
+
+			meshes.emplace_back(Cube(0.5f, i, allCubeYPos[k], j));
 		}
 	}
 	
 	//***************************************************************************************************
-	const auto start = std::chrono::system_clock::now();
 	
 	//Compile vertices on a separate thread
 	vector<GLfloat> allVecVertices;
