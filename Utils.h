@@ -6,6 +6,9 @@
 #include <random>
 #include <time.h>
 #include <array>
+#include <cassert>
+
+#define print(x) std::cout << x << std::endl;
 
 using std::vector;
 using std::array;
@@ -103,7 +106,7 @@ namespace Utils { // namespace because im never going to create an instance of t
 	}
 
 	template<typename T>
-	static vector<T> incrementAll(vector<T> vec, T increment) {
+	static vector<T> incrementAll(const vector<T>& vec, T increment) {
 		vector<T> incrementedVec;
 		incrementedVec.reserve(vec.size());
 
@@ -118,70 +121,129 @@ namespace Utils { // namespace because im never going to create an instance of t
 		
 		//******************************* GENERATE IN X DIRECTION *******************************
 
-		vector<GLfloat> majorPoints;
-		majorPoints.reserve(permutations);
+		vector<GLfloat> xMajorPoints;
+		xMajorPoints.reserve(permutations);
 
 		for (unsigned int i = 0; i < permutations; i++) {
-			majorPoints.push_back((GLfloat)randf(max)); // populate major points with random values
+			xMajorPoints.push_back((GLfloat)randf(max)); // populate major points with random values
 		}
 
-		vector<GLfloat> allPoints;
-		allPoints.reserve((majorPoints.size()-1) * resolution);
+		assert(xMajorPoints.size() == permutations);
 
-		for (unsigned int i = 0; i < majorPoints.size(); i++) { // for every major point
+		vector<GLfloat> allXPoints;
+		allXPoints.reserve(permutations * resolution);
 
-			GLfloat currentPoint = majorPoints[i];
-			if (i + 1 > (majorPoints.size() - 2)) break; // if next point is greater than the number of major points
-			GLfloat nextPoint = majorPoints[i + 1];
+		for (unsigned int i = 0; i < xMajorPoints.size()-1; i++) { // for every major point
+			allXPoints.push_back(xMajorPoints[i]);
+			
+			if (i + 1 == xMajorPoints.size()) break;
 
-			if (currentPoint < nextPoint) { // if current point is lower than next point 
-				for (GLfloat k = currentPoint; // from the current point
-					k < nextPoint; // to the next point
-					k += (nextPoint - currentPoint) / resolution) { // increment by the difference / resolution e.g difference = 0.5, increment by 0.5/5 = 0.1 each time
-						allPoints.push_back(k);
+			GLfloat currentPoint = xMajorPoints[i];
+			GLfloat nextPoint = xMajorPoints[i+1];
+			//GLfloat increment = (nextPoint - currentPoint) / resolution;
+
+			print("CURRENT MAJOR = " << currentPoint);
+			print("NEXT MAJOR = " << nextPoint);
+			//print("INCREMENT = " << increment);
+
+			print((nextPoint > currentPoint ? "NEXT HIGHER" : "NEXT LOWER"));
+
+			if (currentPoint > nextPoint) { // if current point is higher than the next point
+				for (GLfloat current = (currentPoint - (currentPoint - nextPoint) / resolution); // starting 
+					current > nextPoint; 
+					currentPoint -= (currentPoint - nextPoint) / resolution) {
+
+					print((current > nextPoint));
+					allXPoints.push_back(current);
 				}
 			}
-			else { // if current point is higher than the next point
-				for (GLfloat k = currentPoint; k > nextPoint; k -= (currentPoint - nextPoint) / resolution) {
-					allPoints.push_back(k);
+			else {
+				for (GLfloat current = (currentPoint + (currentPoint - nextPoint) / resolution); 
+					current < nextPoint;
+					currentPoint += (nextPoint - currentPoint) / resolution) {
+
+					allXPoints.push_back(current);
 				}
 			}
+
 		}
+
+		allXPoints.push_back(xMajorPoints[xMajorPoints.size() - 1]);
 		
-		Utils::printVec(majorPoints);
+		allXPoints.shrink_to_fit();
+		//std::cout << "COUNT = " << count << std::endl;
+		//std::cout << "Count should be " << (((permutations - 1) * resolution) + 1) << std::endl;
+
+		std::cout << "X MAJOR" << std::endl;
+		Utils::printVec(xMajorPoints);
+		std::cout << "X ALL" << std::endl;
+		Utils::printVec(allXPoints);
 
 		//******************************* GENERATE IN Z DIRECTION *******************************
 
-		majorPoints.clear();
+		xMajorPoints.clear();
+		xMajorPoints.shrink_to_fit();
+
+		vector<GLfloat> zMajorPoints;
+		zMajorPoints.reserve(permutations);
 
 		for (unsigned int i = 0; i < permutations; i++) {
-			majorPoints.push_back((GLfloat)randf(max)); // populate major points with random values
+			zMajorPoints.push_back((GLfloat)randf(max)); // populate major points with random values
 		}
 
-		allPoints.reserve((majorPoints.size() - 1) * resolution);
+		vector<GLfloat> allZPoints;
+		allZPoints.reserve(permutations * resolution);
 
-		for (unsigned int i = 0; i < majorPoints.size(); i++) { // for every major point
+		for (unsigned int i = 0; i < zMajorPoints.size(); i++) { // for every major point
+			allXPoints.push_back(zMajorPoints[i]);
 
-			GLfloat currentPoint = majorPoints[i];
-			if (i + 1 > (majorPoints.size() - 2)) break; // if next point is greater than the number of major points
-			GLfloat nextPoint = majorPoints[i + 1];
+			if (i + 1 == zMajorPoints.size()) break;
 
-			if (currentPoint < nextPoint) { // if current point is lower than next point 
-				for (GLfloat k = currentPoint; // from the current point
-					k < nextPoint; // to the next point
-					k += (nextPoint - currentPoint) / resolution) { // increment by the difference / resolution e.g difference = 0.5, increment by 0.5/5 = 0.1 each time
-					allPoints.push_back(k);
+			GLfloat currentPoint = zMajorPoints[i];
+			GLfloat nextPoint = zMajorPoints[i + 1];
+			GLfloat increment = (nextPoint - currentPoint) / resolution;
+
+			if (currentPoint > nextPoint) {
+				for (GLfloat current = currentPoint + increment; current > nextPoint; currentPoint += increment) {
+					allZPoints.push_back(current);
 				}
 			}
-			else { // if current point is higher than the next point
-				for (GLfloat k = currentPoint; k > nextPoint; k -= (currentPoint - nextPoint) / resolution) {
-					allPoints.push_back(k);
+			else {
+				for (GLfloat current = currentPoint + increment; current < nextPoint; currentPoint += increment) {
+					allZPoints.push_back(current);
 				}
 			}
 		}
-		std::cout << "2nd" << std::endl;
-		Utils::printVec(majorPoints);
+		std::cout << "Z MAJOR" << std::endl;
+		Utils::printVec(zMajorPoints);
+		std::cout << "Z ALL" << std::endl;
+		Utils::printVec(allZPoints);
 
+		allZPoints.shrink_to_fit();
+
+		vector<GLfloat> allPoints;
+		allPoints.reserve(allXPoints.size() * allZPoints.size());
+
+		allPoints = Utils::join(allPoints, allXPoints);
+
+		//Utils::printVec(allPoints);
+
+		
+		std::cout << "ALL Z POINT SIZE" << allZPoints.size() << std::endl;
+		for (unsigned int i = 1; i < allZPoints.size(); i++) {
+			//std::cout << i << std::endl;
+			vector<GLfloat> nextIncrementedXRow;
+			nextIncrementedXRow.reserve(allXPoints.size());
+
+			for (GLfloat element : allXPoints) {
+				nextIncrementedXRow.push_back(element + allZPoints[i]);
+			}
+
+			allPoints = Utils::join(allPoints, nextIncrementedXRow);
+		}
+
+		//std::cout << "ALL POINTS" << std::endl;
+		//Utils::printVec(allPoints);
 
 		return allPoints;
 

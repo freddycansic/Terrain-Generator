@@ -28,18 +28,31 @@ int main() {
 
 	// Mesh declaration
 	vector<Mesh> meshes;
-
-	vector<GLfloat> allCubeYPos = Utils::noiseGenerator(20, 5, 2.0f);
+	
+	unsigned int resolution = 3;
+	unsigned int permutations = 5;
+	vector<GLfloat> allCubeYPos = Utils::noiseGenerator(permutations, resolution, 2.0f);
 	meshes.reserve(allCubeYPos.size());
 
-	for (float j = -10; j < 10; j += 0.5f) {
-		for (float i = allCubeYPos.size() / -2, k = 0;
-			i < (allCubeYPos.size() / 2) - 1 && k < allCubeYPos.size() - 1;
-			i += 0.5f, k++) {
-
-			meshes.emplace_back(Cube(0.5f, i, allCubeYPos[k], j));
+	print("Compiling begun.");
+	unsigned int yIndex = 0;
+	float cubeSize = 0.5f;
+	for (int i = 0; i < permutations*resolution; i+= cubeSize) {
+		for (int k = 0; k < permutations*resolution; k+= cubeSize) {
+			//std::cout << "yIndex: " << yIndex << std::endl;
+			meshes.emplace_back(Cube(0.5f, i, allCubeYPos[yIndex], k));
+			yIndex++;
 		}
 	}
+
+	//for (float j = -10; j < 10; j += 0.5f) {
+	//	for (float i = allCubeYPos.size() / -2, k = 0;
+	//		i < (allCubeYPos.size() / 2) - 1 && k < allCubeYPos.size() - 1;
+	//		i += 0.5f, k++) {
+
+	//		meshes.emplace_back(Cube(0.5f, i, allCubeYPos[k], j));
+	//	}
+	//}
 	
 	//***************************************************************************************************
 	
