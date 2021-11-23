@@ -35,15 +35,16 @@ int main() {
 	meshes.reserve(allCubeYPos.size());
 
 	print("Compiling begun.");
-	unsigned int yIndex = 0;
-	float cubeSize = 0.5f;
-	for (int i = 0; i < permutations*resolution; i+= cubeSize) {
-		for (int k = 0; k < permutations*resolution; k+= cubeSize) {
-			//std::cout << "yIndex: " << yIndex << std::endl;
-			meshes.emplace_back(Cube(0.5f, i, allCubeYPos[yIndex], k));
-			yIndex++;
-		}
-	}
+	Utils::printVec(allCubeYPos);
+	//unsigned int yIndex = 0;
+	//float cubeSize = 0.5f;
+	//for (int i = 0; i < permutations*resolution; i+= cubeSize) {
+	//	for (int k = 0; k < permutations*resolution; k+= cubeSize) {
+	//		//std::cout << "yIndex: " << yIndex << std::endl;
+	//		meshes.emplace_back(Cube(0.5f, i, allCubeYPos[yIndex], k));
+	//		yIndex++;
+	//	}
+	//}
 
 	//for (float j = -10; j < 10; j += 0.5f) {
 	//	for (float i = allCubeYPos.size() / -2, k = 0;
