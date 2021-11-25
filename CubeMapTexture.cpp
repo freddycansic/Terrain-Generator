@@ -1,4 +1,5 @@
 #include "CubeMapTexture.h"
+#include <stdexcept>
 
 CubeMapTexture::CubeMapTexture(vector<string> filePaths, GLenum magFiltering, GLenum minFiltering) {
 	glGenTextures(1, &ID);
@@ -8,6 +9,8 @@ CubeMapTexture::CubeMapTexture(vector<string> filePaths, GLenum magFiltering, GL
 	for (unsigned int i = 0; i < filePaths.size(); i++) // 6 iterations because 6 faces on cube
 	{
 		data = stbi_load(filePaths[i].c_str(), &width, &height, &nbrChannels, 0); // populate width height nbrChannels
+
+		if (!data) throw std::invalid_argument("Image data failed to load.");
 
 		glTexImage2D(startingFace + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 	}

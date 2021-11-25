@@ -25,7 +25,6 @@ const unsigned int VERTEX_LENGTH = 6;
 
 using std::cout;
 using std::endl;
-using namespace Globals;
 
 int main() {
 	const auto start = std::chrono::system_clock::now(); // start benchmark
@@ -33,26 +32,26 @@ int main() {
 	// Mesh declaration
 	vector<Mesh> meshes;
 	
-	unsigned int resolution = 3;
-	unsigned int permutations = 5;
-	float maxHeight = 2.0f;
+	unsigned int resolution = 5;
+	unsigned int permutations = 20;
+	float maxHeight = 3.0f;
 
 	vector<GLfloat> allCubeYPos = Utils::noiseGenerator(permutations, resolution, maxHeight);
 	meshes.reserve(allCubeYPos.size());
 
 	print("Compiling begun.");
-	Utils::printVec(allCubeYPos);
+	//Utils::printVec(allCubeYPos);
 	
-	float cubeSize = 0.5f;
+	float cubeSize = 1.0f;
 	unsigned int rowLength = (permutations - 1) * resolution + 1;
 
 	for (int i = 0; i < rowLength * rowLength; i+=rowLength) {
 		for (int k = i, j = 0; k < i + rowLength && j < rowLength; k++, j++) {
-			std::cout << k << " ";
+			//std::cout << k << " ";
 
-			meshes.emplace_back(Cube(cubeSize, i, allCubeYPos[k], j));
+			meshes.emplace_back(Cube(cubeSize, i / rowLength, allCubeYPos[k], j));
 		}
-		std::cout << std::endl;
+		//std::cout << std::endl;
 	}
 
 	//for (float j = -10; j < 10; j += 0.5f) {
@@ -130,7 +129,7 @@ int main() {
 
 	// initialise texture
 	//Texture tex("uvTest.jpg", GL_TEXTURE_2D, GL_NEAREST, GL_NEAREST, GL_REPEAT);
-	vector<string> filePaths = {"uvTest.jpg", "uvTest.jpg", "uvTest.jpg", "uvTest.jpg", "uvTest.jpg", "uvTest.jpg", };
+	vector<string> filePaths = { "cube_top.jpg","cube_side.jpg","cube_side.jpg","cube_side.jpg","cube_side.jpg","cube_bottom.jpg" };
 	CubeMapTexture cubeMap(filePaths, GL_NEAREST, GL_NEAREST);
 
 	// initialise camera

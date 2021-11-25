@@ -8,7 +8,9 @@
 #include "Utils.h"
 #include <GLFW/glfw3.h>
 
-using namespace Globals;
+extern const unsigned int WIDTH;
+extern const unsigned int HEIGHT;
+
 using glm::mat4;
 using glm::vec3;
 

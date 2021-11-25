@@ -106,6 +106,15 @@
     <Image Include="uvTest.jpg">
       <Filter>Resource Files\Textures</Filter>
     </Image>
+    <Image Include="cube_bottom.jpg">
+      <Filter>Resource Files\Textures</Filter>
+    </Image>
+    <Image Include="cube_side.jpg">
+      <Filter>Resource Files\Textures</Filter>
+    </Image>
+    <Image Include="cube_top.jpg">
+      <Filter>Resource Files\Textures</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="default.vert">

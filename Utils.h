@@ -15,10 +15,6 @@ using std::array;
 
 extern const unsigned int VERTEX_LENGTH;
 
-namespace Globals {
-
-};
-
 namespace Utils { // namespace because im never going to create an instance of this if it were a class
 
 	template<typename T>
@@ -152,11 +148,11 @@ namespace Utils { // namespace because im never going to create an instance of t
 			GLfloat nextPoint = xMajorPoints[i+1];
 			//GLfloat increment = (nextPoint - currentPoint) / resolution;
 
-			print("CURRENT MAJOR = " << currentPoint);
-			print("NEXT MAJOR = " << nextPoint);
-			//print("INCREMENT = " << increment);
+			//print("CURRENT MAJOR = " << currentPoint);
+			//print("NEXT MAJOR = " << nextPoint);
+			////print("INCREMENT = " << increment);
 
-			print((nextPoint > currentPoint ? "NEXT HIGHER" : "NEXT LOWER"));
+			//print((nextPoint > currentPoint ? "NEXT HIGHER" : "NEXT LOWER"));
 
 			if (currentPoint > nextPoint) { // if current point is higher than the next point
 				GLfloat difference = currentPoint - nextPoint; // get the difference between both points
@@ -189,10 +185,10 @@ namespace Utils { // namespace because im never going to create an instance of t
 		
 		allXPoints.shrink_to_fit();
 
-		std::cout << "X MAJOR" << std::endl;
-		Utils::printVec(xMajorPoints);
-		std::cout << "X ALL" << std::endl;
-		Utils::printVec(allXPoints);
+		//std::cout << "X MAJOR" << std::endl;
+		//Utils::printVec(xMajorPoints);
+		//std::cout << "X ALL" << std::endl;
+		//Utils::printVec(allXPoints);
 
 		Utils::freeVec(xMajorPoints);
 
@@ -220,11 +216,11 @@ namespace Utils { // namespace because im never going to create an instance of t
 			GLfloat nextPoint = zMajorPoints[i + 1];
 			//GLfloat increment = (nextPoint - currentPoint) / resolution;
 
-			print("CURRENT MAJOR = " << currentPoint);
-			print("NEXT MAJOR = " << nextPoint);
-			//print("INCREMENT = " << increment);
+			//print("CURRENT MAJOR = " << currentPoint);
+			//print("NEXT MAJOR = " << nextPoint);
+			////print("INCREMENT = " << increment);
 
-			print((nextPoint > currentPoint ? "NEXT HIGHER" : "NEXT LOWER"));
+			//print((nextPoint > currentPoint ? "NEXT HIGHER" : "NEXT LOWER"));
 
 			if (currentPoint > nextPoint) { // if current point is higher than the next point
 				GLfloat difference = currentPoint - nextPoint; // get the difference between both points
@@ -259,10 +255,10 @@ namespace Utils { // namespace because im never going to create an instance of t
 
 		Utils::freeVec(xMajorPoints);
 
-		std::cout << "Z MAJOR" << std::endl;
-		Utils::printVec(zMajorPoints);
-		std::cout << "Z ALL" << std::endl;
-		Utils::printVec(allZPoints);
+		//std::cout << "Z MAJOR" << std::endl;
+		//Utils::printVec(zMajorPoints);
+		//std::cout << "Z ALL" << std::endl;
+		//Utils::printVec(allZPoints);
 
 		vector<GLfloat> allPoints;
 		allPoints.reserve(allXPoints.size() * allZPoints.size());

@@ -7,7 +7,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "Utils.h"
 
-using namespace Globals;
 
 Window::Window(const unsigned int height, const unsigned int width, const char* title) {
 	this->height = height;
