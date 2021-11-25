@@ -1,5 +1,8 @@
 #include "Camera.h"
 
+extern const unsigned int WIDTH;
+extern const unsigned int HEIGHT;
+
 // position = world origin = -3 on z axis (positive 3 because z axis increases as you move away from the screen)
 vec3 cameraPos = vec3(0.0f, 0.0f, 3.0f);
 vec3 cameraFront = vec3(0.0f, 0.0f, -1.0f);

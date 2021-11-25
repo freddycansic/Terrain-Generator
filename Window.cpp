@@ -22,6 +22,7 @@ Window::Window(const unsigned int height, const unsigned int width, const char* 
 	GLFWmonitor* monitor = glfwGetPrimaryMonitor();
 	const GLFWvidmode* vidmode = glfwGetVideoMode(monitor);
 
+	//window = glfwCreateWindow(vidmode->width, vidmode->height, title, NULL, NULL);
 	window = glfwCreateWindow(vidmode->width, vidmode->height, title, NULL, NULL);
 
 	if (window == NULL) {

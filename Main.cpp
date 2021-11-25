@@ -19,6 +19,10 @@
 #include "Mesh.h"
 #include "CubeMapTexture.h"
 
+const unsigned int WIDTH = 1920;
+const unsigned int HEIGHT = 1080;
+const unsigned int VERTEX_LENGTH = 6;
+
 using std::cout;
 using std::endl;
 using namespace Globals;
@@ -31,20 +35,25 @@ int main() {
 	
 	unsigned int resolution = 3;
 	unsigned int permutations = 5;
-	vector<GLfloat> allCubeYPos = Utils::noiseGenerator(permutations, resolution, 2.0f);
+	float maxHeight = 2.0f;
+
+	vector<GLfloat> allCubeYPos = Utils::noiseGenerator(permutations, resolution, maxHeight);
 	meshes.reserve(allCubeYPos.size());
 
 	print("Compiling begun.");
 	Utils::printVec(allCubeYPos);
-	//unsigned int yIndex = 0;
-	//float cubeSize = 0.5f;
-	//for (int i = 0; i < permutations*resolution; i+= cubeSize) {
-	//	for (int k = 0; k < permutations*resolution; k+= cubeSize) {
-	//		//std::cout << "yIndex: " << yIndex << std::endl;
-	//		meshes.emplace_back(Cube(0.5f, i, allCubeYPos[yIndex], k));
-	//		yIndex++;
-	//	}
-	//}
+	
+	float cubeSize = 0.5f;
+	unsigned int rowLength = (permutations - 1) * resolution + 1;
+
+	for (int i = 0; i < rowLength * rowLength; i+=rowLength) {
+		for (int k = i, j = 0; k < i + rowLength && j < rowLength; k++, j++) {
+			std::cout << k << " ";
+
+			meshes.emplace_back(Cube(cubeSize, i, allCubeYPos[k], j));
+		}
+		std::cout << std::endl;
+	}
 
 	//for (float j = -10; j < 10; j += 0.5f) {
 	//	for (float i = allCubeYPos.size() / -2, k = 0;

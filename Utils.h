@@ -13,8 +13,10 @@
 using std::vector;
 using std::array;
 
+extern const unsigned int VERTEX_LENGTH;
+
 namespace Globals {
-	const unsigned int WIDTH = 1920, HEIGHT = 1080, VERTEX_LENGTH = 6;
+
 };
 
 namespace Utils { // namespace because im never going to create an instance of this if it were a class
@@ -73,9 +75,9 @@ namespace Utils { // namespace because im never going to create an instance of t
 	static void printVertices(const vector<GLfloat>& vertices) {
 		std::cout << "VERTICES" << std::endl;
 		
-		for (int i = 0; i < vertices.size() / Globals::VERTEX_LENGTH; i++) { // Mesh::VERTEX_LENGTH = position coords, color, texture coords
-			for (int k = 0; k < Globals::VERTEX_LENGTH; k++) {
-				std::cout << vertices[i * Globals::VERTEX_LENGTH + k] << ((k == 2) ? "  " : " "); // after pos coords do an extra space to show where the texture coords are also take any chance to use a ternary operator cause its so cool
+		for (int i = 0; i < vertices.size() / VERTEX_LENGTH; i++) { // Mesh::VERTEX_LENGTH = position coords, color, texture coords
+			for (int k = 0; k < VERTEX_LENGTH; k++) {
+				std::cout << vertices[i * VERTEX_LENGTH + k] << ((k == 2) ? "  " : " "); // after pos coords do an extra space to show where the texture coords are also take any chance to use a ternary operator cause its so cool
 			}
 			std::cout << std::endl;
 		}
@@ -104,7 +106,7 @@ namespace Utils { // namespace because im never going to create an instance of t
 	static T maxInVec(vector<T> vec) {
 		T max = 0;
 		for (T element : vec) {
-			if (element > max){
+			if (element > max) {
 				max = element;
 			}
 		}
@@ -125,6 +127,8 @@ namespace Utils { // namespace because im never going to create an instance of t
 	static vector<GLfloat> noiseGenerator(unsigned int permutations, unsigned int resolution, float max) {
 		srand((unsigned int) time(NULL));
 		
+		unsigned int rowLength = (permutations - 1) * resolution + 1;
+
 		//******************************* GENERATE IN X DIRECTION *******************************
 
 		vector<GLfloat> xMajorPoints;
@@ -137,7 +141,7 @@ namespace Utils { // namespace because im never going to create an instance of t
 		assert(xMajorPoints.size() == permutations);
 
 		vector<GLfloat> allXPoints;
-		allXPoints.reserve((permutations - 1) * resolution + 1);
+		allXPoints.reserve(rowLength);
 
 		for (unsigned int i = 0; i < xMajorPoints.size(); i++) { // for every major point
 			allXPoints.push_back(xMajorPoints[i]);
@@ -159,8 +163,10 @@ namespace Utils { // namespace because im never going to create an instance of t
 				GLfloat increment = difference / resolution; // split the difference into resolution pieces e.g 5 equal pieces
 
 				for (GLfloat current = (currentPoint - increment); // starting point = current point - increment
-					current >= nextPoint; // while the current point is greater than the next point
+					current > nextPoint; // while the current point is greater than the next point 
 					current -= increment) { // decrement currentpoint
+
+					if (current - (increment / (2 * resolution)) < nextPoint) break; // if current is incremented by a little bit is it greater than the next point, had to implement this cause of floating point errors
 
 					allXPoints.push_back(current);
 				}
@@ -173,6 +179,8 @@ namespace Utils { // namespace because im never going to create an instance of t
 					current < nextPoint;
 					current += increment) {
 					
+					if (current + (increment / (2 * resolution)) > nextPoint) break;
+
 					allXPoints.push_back(current);
 				}
 			}
@@ -193,21 +201,18 @@ namespace Utils { // namespace because im never going to create an instance of t
 		vector<GLfloat> zMajorPoints;
 		zMajorPoints.reserve(permutations);
 
-		for (unsigned int i = 0; i < permutations; i++) {
+		zMajorPoints.push_back(xMajorPoints[0]); // make first zmajor the first x major so lines sync up
+		for (unsigned int i = 1; i < permutations; i++) {
 			zMajorPoints.push_back((GLfloat)randf(max)); // populate major points with random values
 		}
 
 		vector<GLfloat> allZPoints;
-		allZPoints.reserve((permutations-1)*resolution + 1); // reserve space for all minor points. ((major points - the last point) * resolution aka inbetween places) + the final major point
+		allZPoints.reserve(rowLength); // reserve space for all minor points. ((major points - the last point) * resolution aka inbetween places) + the final major point
 
 
 		for (unsigned int i = 0; i < zMajorPoints.size(); i++) { // for every major point
-			if (i == 0) {
-				allZPoints.push_back(xMajorPoints[0]); // make first zmajor the first x major so lines sync up
-			}
-			else {
-				allZPoints.push_back(zMajorPoints[i]);
-			}
+	
+			allZPoints.push_back(zMajorPoints[i]); // append major point
 
 			if (i + 1 == zMajorPoints.size()) break;
 
@@ -229,6 +234,8 @@ namespace Utils { // namespace because im never going to create an instance of t
 					current > nextPoint; // while the current point is greater than the next point
 					current -= increment) { // decrement currentpoint
 
+					if (current - (increment / (2 * resolution)) < nextPoint) break; // if current is incremented by a little bit is it greater than the next point, had to implement this cause of floating point errors
+
 					allZPoints.push_back(current);
 				}
 			}
@@ -240,12 +247,14 @@ namespace Utils { // namespace because im never going to create an instance of t
 					current < nextPoint;
 					current += increment) {
 
+					if (current + (increment / (2 * resolution)) > nextPoint) break;
+
 					allZPoints.push_back(current);
 				}
 			}
 
 		}
-
+		
 		allZPoints.shrink_to_fit();
 
 		Utils::freeVec(xMajorPoints);
