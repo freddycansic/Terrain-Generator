@@ -266,13 +266,15 @@ namespace Utils { // namespace because im never going to create an instance of t
 	
 		// create all points using x and z axis
 
-		for (unsigned int zRow = 0; zRow < allZPoints.size(); zRow++) { // for every point on the z axis
+		for (unsigned int zPoint = 0; zPoint < allZPoints.size(); zPoint++) { // for every point on the z axis
 
 			for (unsigned int xPoint = 0; xPoint < allXPoints.size(); xPoint++) { // iterate through every point in the row
 				
-				allPoints.push_back(allXPoints[xPoint] + abs(allXPoints[xPoint] - allZPoints[zRow]));
+
+				allPoints.push_back(allZPoints[zPoint] + (abs(allXPoints[xPoint] - allZPoints[zPoint])));
 
 			}
+			//print(std::endl);
 
 		}
 		

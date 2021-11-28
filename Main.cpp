@@ -32,9 +32,9 @@ int main() {
 	// Mesh declaration
 	vector<Mesh> staticMeshes;
 	
-	unsigned int resolution = 8;
-	unsigned int permutations = 60;
-	float maxHeight = 10.0f;
+	unsigned int resolution = 5;
+	unsigned int permutations = 10;
+	float maxHeight = 2.5f;
 
 	vector<GLfloat> allCubeYPos = Utils::noiseGenerator(permutations, resolution, maxHeight);
 	staticMeshes.reserve(allCubeYPos.size());
