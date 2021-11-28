@@ -30,14 +30,14 @@ int main() {
 	const auto start = std::chrono::system_clock::now(); // start benchmark
 
 	// Mesh declaration
-	vector<Mesh> meshes;
+	vector<Mesh> staticMeshes;
 	
-	unsigned int resolution = 5;
-	unsigned int permutations = 20;
-	float maxHeight = 3.0f;
+	unsigned int resolution = 8;
+	unsigned int permutations = 60;
+	float maxHeight = 10.0f;
 
 	vector<GLfloat> allCubeYPos = Utils::noiseGenerator(permutations, resolution, maxHeight);
-	meshes.reserve(allCubeYPos.size());
+	staticMeshes.reserve(allCubeYPos.size());
 
 	print("Compiling begun.");
 	//Utils::printVec(allCubeYPos);
@@ -49,32 +49,23 @@ int main() {
 		for (int k = i, j = 0; k < i + rowLength && j < rowLength; k++, j++) {
 			//std::cout << k << " ";
 
-			meshes.emplace_back(Cube(cubeSize, i / rowLength, allCubeYPos[k], j));
+			staticMeshes.emplace_back(Cube(cubeSize, i / rowLength, allCubeYPos[k], j));
 		}
 		//std::cout << std::endl;
 	}
 
-	//for (float j = -10; j < 10; j += 0.5f) {
-	//	for (float i = allCubeYPos.size() / -2, k = 0;
-	//		i < (allCubeYPos.size() / 2) - 1 && k < allCubeYPos.size() - 1;
-	//		i += 0.5f, k++) {
-
-	//		meshes.emplace_back(Cube(0.5f, i, allCubeYPos[k], j));
-	//	}
-	//}
-	
 	//***************************************************************************************************
 	
 	//Compile vertices on a separate thread
 	vector<GLfloat> allVecVertices;
-	std::thread t1([&allVecVertices, meshes]() mutable {
-		allVecVertices = Mesh::compileAllVertices(meshes);
+	std::thread t1([&allVecVertices, staticMeshes]() mutable {
+		allVecVertices = Mesh::compileAllVertices(staticMeshes);
 	});
 
 	// Compile indices on a separate thread
 	vector<GLuint> allVecIndices;
-	std::thread t2([&allVecIndices, meshes]() mutable {
-		allVecIndices = Mesh::compileAllIndices(meshes);
+	std::thread t2([&allVecIndices, staticMeshes]() mutable {
+		allVecIndices = Mesh::compileAllIndices(staticMeshes);
 	});
 	
 	t1.join(); // wait for both threads to finish
@@ -129,7 +120,9 @@ int main() {
 
 	// initialise texture
 	//Texture tex("uvTest.jpg", GL_TEXTURE_2D, GL_NEAREST, GL_NEAREST, GL_REPEAT);
-	vector<string> filePaths = { "cube_top.jpg","cube_side.jpg","cube_side.jpg","cube_side.jpg","cube_side.jpg","cube_bottom.jpg" };
+	vector<string> filePaths = { "grass_side.jpg","grass_side.jpg", // left right side
+								 "grass_top.jpg","grass_bottom.jpg", // top bottom
+								 "grass_side.jpg","grass_side.jpg" }; // front back
 	CubeMapTexture cubeMap(filePaths, GL_NEAREST, GL_NEAREST);
 
 	// initialise camera
@@ -137,6 +130,7 @@ int main() {
 
 	// configure opengl
 	glEnable(GL_DEPTH_TEST); // dont draw triangles that are behind other triangles
+	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
 	while (!window.shouldClose()) {
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // clear back buffer with color

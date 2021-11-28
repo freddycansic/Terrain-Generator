@@ -179,9 +179,9 @@
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="cube_bottom.jpg" />
-    <Image Include="cube_side.jpg" />
-    <Image Include="cube_top.jpg" />
+    <Image Include="grass_bottom.jpg" />
+    <Image Include="grass_side.jpg" />
+    <Image Include="grass_top.jpg" />
     <Image Include="uvTest.jpg" />
   </ItemGroup>
   <ItemGroup>

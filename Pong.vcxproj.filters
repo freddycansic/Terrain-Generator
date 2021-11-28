@@ -106,13 +106,13 @@
     <Image Include="uvTest.jpg">
       <Filter>Resource Files\Textures</Filter>
     </Image>
-    <Image Include="cube_bottom.jpg">
+    <Image Include="grass_side.jpg">
       <Filter>Resource Files\Textures</Filter>
     </Image>
-    <Image Include="cube_side.jpg">
+    <Image Include="grass_bottom.jpg">
       <Filter>Resource Files\Textures</Filter>
     </Image>
-    <Image Include="cube_top.jpg">
+    <Image Include="grass_top.jpg">
       <Filter>Resource Files\Textures</Filter>
     </Image>
   </ItemGroup>

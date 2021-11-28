@@ -6,6 +6,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <stdexcept>
+#include <assert.h>
 
 using std::vector;
 using std::string;

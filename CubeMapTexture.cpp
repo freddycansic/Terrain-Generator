@@ -1,9 +1,10 @@
 #include "CubeMapTexture.h"
-#include <stdexcept>
 
 CubeMapTexture::CubeMapTexture(vector<string> filePaths, GLenum magFiltering, GLenum minFiltering) {
 	glGenTextures(1, &ID);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, ID);
+
+	assert(filePaths.size() == 6);
 
 	unsigned int startingFace = GL_TEXTURE_CUBE_MAP_POSITIVE_X; // learnopengl 27.1
 	for (unsigned int i = 0; i < filePaths.size(); i++) // 6 iterations because 6 faces on cube
