@@ -1,0 +1,7 @@
+﻿  Main.cpp
+c:\users\fredd\desktop\opengl3dtest\utils.h(75): warning C4018: '<': signed/unsigned mismatch
+c:\users\fredd\desktop\opengl3dtest\main.cpp(48): warning C4018: '<': signed/unsigned mismatch
+c:\users\fredd\desktop\opengl3dtest\main.cpp(49): warning C4018: '<': signed/unsigned mismatch
+c:\users\fredd\desktop\opengl3dtest\main.cpp(52): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+c:\users\fredd\desktop\opengl3dtest\main.cpp(52): warning C4244: 'argument': conversion from 'unsigned int' to 'GLfloat', possible loss of data
+  Pong.vcxproj -> C:\Users\fredd\Desktop\openGL3DTest\x64\Debug\OpenGL3DTest.exe

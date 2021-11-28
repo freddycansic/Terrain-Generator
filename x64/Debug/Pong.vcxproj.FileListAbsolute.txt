@@ -1,0 +1,2 @@
+C:\Users\fredd\Desktop\openGL3DTest\x64\Debug\OpenGL3DTest.exe
+C:\Users\fredd\Desktop\openGL3DTest\x64\Debug\OpenGL3DTest.pdb
