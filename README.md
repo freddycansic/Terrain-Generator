@@ -1,2 +1,2 @@
-# OpenGL3DTest
-Learning OpenGL for 3D
+# Terrain Generator
+Minecraft style terrain generation.
