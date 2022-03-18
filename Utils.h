@@ -56,7 +56,7 @@ namespace Utils { // namespace because im never going to create an instance of t
 	}
 
 	static float randf(float max) {
-		return (float(rand()) / float((RAND_MAX)) * max);
+		return (float(rand_r()) / float((RAND_MAX)) * max);
 	}
 
 	template<typename T>
