@@ -58,19 +58,16 @@ int main() {
 	
 	//Compile vertices on a separate thread
 	vector<GLfloat> allVecVertices;
-	std::thread t1([&allVecVertices, staticMeshes]() mutable {
+	std::jthread t1([&allVecVertices, staticMeshes]() mutable {
 		allVecVertices = Mesh::compileAllVertices(staticMeshes);
 	});
 
 	// Compile indices on a separate thread
 	vector<GLuint> allVecIndices;
-	std::thread t2([&allVecIndices, staticMeshes]() mutable {
+	std::jthread t2([&allVecIndices, staticMeshes]() mutable {
 		allVecIndices = Mesh::compileAllIndices(staticMeshes);
 	});
 	
-	t1.join(); // wait for both threads to finish
-	t2.join();
-
 	GLfloat* allVertices = new GLfloat[allVecVertices.size()]; // arr on heap because array size needs to be "dynamic"
 	for (unsigned int i = 0; i < allVecVertices.size(); i++) { // for every in allglvertices
 		allVertices[i] = allVecVertices[i];
